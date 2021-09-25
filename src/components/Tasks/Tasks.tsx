@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { TaskItem } from "./TaskItem";
-import style from "./Tasks.module.css";
+import style from "./Tasks.module.scss";
 import { AppStateType } from "../../reduxStore";
-
-const Tasks = (props) => {
+import {TaskType} from '../../reducers/tasksReducer'
+type TasksPropsType={tasks:Array<TaskType>}
+const Tasks = (props:TasksPropsType) => {
   let tasks = [];
   //if (!projectsIsFetching)
 
@@ -12,7 +12,7 @@ const Tasks = (props) => {
     .filter((item) => item.status === "Backlog")
     .map((item) => {
       return (
-        <div key={item._id}>
+        <div key={item.id}>
           <TaskItem task={item} />
         </div>
       );
@@ -21,7 +21,7 @@ const Tasks = (props) => {
     .filter((item) => item.status === "To Do")
     .map((item) => {
       return (
-        <div key={item._id}>
+        <div key={item.id}>
           <TaskItem task={item} />
         </div>
       );
@@ -30,7 +30,7 @@ const Tasks = (props) => {
     .filter((item) => item.status === "In Progress")
     .map((item) => {
       return (
-        <div key={item._id}>
+        <div key={item.id}>
           <TaskItem task={item} />
         </div>
       );
@@ -39,7 +39,7 @@ const Tasks = (props) => {
     .filter((item) => item.status === "Ready")
     .map((item) => {
       return (
-        <div key={item._id}>
+        <div key={item.id}>
           <TaskItem task={item} />
         </div>
       );

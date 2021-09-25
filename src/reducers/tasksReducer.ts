@@ -1,7 +1,8 @@
-import { InferActionTypes } from "../reduxStore";
-
-type StatusType="Backlog"|"To Do"|"In Progress"|"Ready"
-type TaskType={
+im port { InferActionTypes } from "../reduxStore";
+import  {Dispatch} from 'redux';
+const Backlog="Backlog", toDo="To Do",inProgress ="In Progress",ready='Ready'
+type StatusType=typeof Backlog|typeof toDo|typeof inProgress|typeof ready
+export type TaskType={
     status: StatusType,
     id: number,
     taskName: string,
@@ -80,6 +81,7 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
   }
 };
 type ActionTypes = InferActionTypes<typeof actions>;
+type DispatchType=Dispatch<ActionTypes>
 
 export let actions = {
   onGotTasks: (tasks: Array<TaskType>) => {
@@ -87,3 +89,29 @@ export let actions = {
   },
 
 };
+
+
+export const getTasksFetch = () => {
+  return (dispatch:DispatchType) => {
+    const token = localStorage.token;
+    if (token) {
+      return fetch("http://localhost:5000/tasks", {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'Authorization': `${token}`
+        }
+      })
+        .then(resp => resp.json())
+        .then(data => {
+          
+          if (data.message) {
+            console.error(data.message)
+          } else {
+            dispatch(actions.onGotTasks(data.tasks))
+          }
+        })
+    }
+  }
+}

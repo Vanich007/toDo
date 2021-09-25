@@ -1,9 +1,9 @@
 import './App.css';
-import {Tasks} from './components/Tasks/Tasks'
+import TasksContainer from './components/Tasks/Tasks'
 
 function App() {
   return (
-    <Tasks />
+    <TasksContainer />
   );
 }
 
