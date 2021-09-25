@@ -1,4 +1,4 @@
-im port { InferActionTypes } from "../reduxStore";
+import { InferActionTypes } from "../reduxStore";
 import  {Dispatch} from 'redux';
 const Backlog="Backlog", toDo="To Do",inProgress ="In Progress",ready='Ready'
 type StatusType=typeof Backlog|typeof toDo|typeof inProgress|typeof ready
