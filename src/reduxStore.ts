@@ -1,9 +1,11 @@
 import {tasksReducer} from "./reducers/tasksReducer";
+import {modalReducer} from "./reducers/modalReducer";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunkMiddleware from "redux-thunk";
 
 let reducers = combineReducers({
   tasksPage: tasksReducer,
+  modalPage:modalReducer
 });
 
 type RootReducerType = typeof reducers;

@@ -1,5 +1,9 @@
 //npm install react-bootstrap@next bootstrap@5.1.1
-function Example() {
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import {useState} from 'react'
+
+export function ShowTaskInModal() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -29,4 +33,4 @@ function Example() {
   );
 }
 
-render(<Example />);
+

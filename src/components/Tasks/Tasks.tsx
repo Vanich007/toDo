@@ -1,11 +1,20 @@
+import {useEffect} from 'react'
 import { connect } from "react-redux";
 import { TaskItem } from "./TaskItem";
 import style from "./Tasks.module.scss";
 import { AppStateType } from "../../reduxStore";
-import {TaskType} from '../../reducers/tasksReducer'
-type TasksPropsType={tasks:Array<TaskType>}
+import {TaskType,getTasksFetch} from '../../reducers/tasksReducer'
+import {ShowTaskInModal} from '../Modal/Modal'
+
+type TasksPropsType={tasks:Array<TaskType>,getTasksFetch:any}
+
 const Tasks = (props:TasksPropsType) => {
-  let tasks = [];
+
+useEffect(()=>{
+  props.getTasksFetch()
+},[])
+
+  //let tasks = [];
   //if (!projectsIsFetching)
 
   const backlogTasks = props.tasks
@@ -55,16 +64,19 @@ const Tasks = (props:TasksPropsType) => {
         {inProgressTasks}
       </div>
       <div className={`${style.readyTasks} ${style.group}`}>{readyTasks}</div>
+      props.modalIsActive?<ShowTaskInModal />:null
     </div>
+    
   );
 };
 
 const mapStateToProps = (state:AppStateType) => {
   return {
-    tasks: state.tasksPage.tasks
+    tasks: state.tasksPage.tasks,
+    modal: state.modalPage.modalIsActive
   };
 };
 
-const TasksContainer = connect(mapStateToProps, {})(Tasks);
+const TasksContainer = connect(mapStateToProps, {getTasksFetch})(Tasks);
 
 export default TasksContainer;

@@ -10,56 +10,7 @@ export type TaskType={
 }
 
 const defaultstate = {
-    tasks: [
-      {
-        status: "Backlog",
-        id: 1,
-        taskName: "Todo1",
-        deadline: 1635488644486,
-      },
-      {
-        status: "To Do",
-        id: 2,
-        taskName: "Todo2",
-        deadline: 1632494447545,
-      },
-      {
-        status: "In Progress",
-        id: 3,
-        taskName: "Todo3",
-        deadline: 1633498544486,
-      },
-      {
-        status: "Ready",
-        id: 4,
-        taskName: "Todo4",
-        deadline: 1632488544486,
-      },
-      {
-        status: "Backlog",
-        id: 5,
-        taskName: "Todo5",
-        deadline: 1635488644486,
-      },
-      {
-        status: "To Do",
-        id: 6,
-        taskName: "Todo6",
-        deadline: 1632494447545,
-      },
-      {
-        status: "In Progress",
-        id: 7,
-        taskName: "Todo7",
-        deadline: 1633498544486,
-      },
-      {
-        status: "Ready",
-        id: 8,
-        taskName: "Todo8",
-        deadline: 1632488544486,
-      },
-    ] as Array<TaskType>
+    tasks: [] as Array<TaskType>
   }; 
 
 
@@ -92,15 +43,11 @@ export let actions = {
 
 
 export const getTasksFetch = () => {
-  return (dispatch:DispatchType) => {
-    const token = localStorage.token;
-    if (token) {
+  return (dispatch:any) => {
       return fetch("http://localhost:5000/tasks", {
         method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          'Authorization': `${token}`
+          'Content-Type': 'application/json'
         }
       })
         .then(resp => resp.json())
@@ -109,9 +56,8 @@ export const getTasksFetch = () => {
           if (data.message) {
             console.error(data.message)
           } else {
-            dispatch(actions.onGotTasks(data.tasks))
+            dispatch(actions.onGotTasks(data))
           }
         })
-    }
   }
 }
