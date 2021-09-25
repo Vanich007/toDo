@@ -1,0 +1,93 @@
+$containerbackgroundcolor: #000;
+$groupbackgroundcolor: rgb(53, 53, 53);
+$itembackgroundcolor: #6a6dcd;
+$white: #fff;
+$orange: orange;
+$red: red;
+@mixin flexible() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin border-radius($radius) {
+  // Префиксы для:
+  -webkit-border-radius: $radius; // Chrome и Safari
+  -moz-border-radius: $radius; // Firefox
+  -ms-border-radius: $radius; // Internet Explorer
+  -o-border-radius: $radius; // Opera
+  border-radius: $radius; // Стандартный CSS
+}
+@mixin column-header() {
+  color: $white;
+  padding: 24px 0 0 24px;
+  font-family: SF Pro Display;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 37px;
+  line-height: 44px;
+}
+
+.container {
+  @include flexible();
+  background: $containerbackgroundcolor;
+  flex-direction: row;
+}
+.group {
+  @include border-radius(8px);
+  background: groupbackgroundcolor;
+  padding: 10px;
+  background-position: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+  margin: 10px;
+}
+.task_item {
+  @include border-radius(8px);
+  background-color: $itembackgroundcolor;
+  padding: 10px;
+  box-shadow: 0px 16px 32px #00000014, 0px 4px 8px #0000001f;
+  font-size: 14px;
+  font-family: Helvetica, sans-serif;
+}
+
+.deadlinesoon {
+  background-color: $orange;
+}
+.deadlineoff {
+  background-color: $red;
+}
+
+.taskname {
+  background-color: transparent;
+  font-size: 16;
+  font-style: normal;
+  font-weight: 400;
+  height: auto;
+  letter-spacing: 0;
+  line-height: 24px;
+  mix-blend-mode: normal;
+  text-align: left;
+  white-space: nowrap;
+  padding: 10px 0 10 px 0;
+}
+
+.backlogTasks:before {
+  content: "Backlog";
+  @include column-header();
+}
+.todoTasks {
+  &:before {
+    content: "To do";
+    @include column-header();
+  }
+}
+.inProgressTasks:before {
+  content: "In progress";
+  @include column-header();
+}
+.readyTasks:before {
+  content: "Designed";
+  @include column-header();
+}
