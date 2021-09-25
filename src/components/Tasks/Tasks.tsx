@@ -1,18 +1,22 @@
-import {useEffect} from 'react'
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { TaskItem } from "./TaskItem";
-import style from "./Tasks.module.scss";
+import "./Tasks.scss";
 import { AppStateType } from "../../reduxStore";
-import {TaskType,getTasksFetch} from '../../reducers/tasksReducer'
-import {ShowTaskInModal} from '../Modal/Modal'
+import { TaskType, getTasksFetch } from "../../reducers/tasksReducer";
+import { ShowTaskInModal } from "../Modal/Modal";
+//import { actions} from "../../reducers/modalReducer";
+type TasksPropsType = {
+  tasks: Array<TaskType>;
+  modalIsActive: boolean;
+  getTasksFetch: any;
+  activeTask: TaskType;
+};
 
-type TasksPropsType={tasks:Array<TaskType>,getTasksFetch:any}
-
-const Tasks = (props:TasksPropsType) => {
-
-useEffect(()=>{
-  props.getTasksFetch()
-},[])
+const Tasks: React.FC<TasksPropsType> = (props) => {
+  useEffect(() => {
+    props.getTasksFetch();
+  }, []);
 
   //let tasks = [];
   //if (!projectsIsFetching)
@@ -55,28 +59,29 @@ useEffect(()=>{
     });
 
   return (
-    <div className={style.container}>
-      <div className={`${style.backlogTasks} ${style.group}`}>
-        {backlogTasks}
+    <>
+      {" "}
+      <div className="container">
+        <div className="backlogTasks group">{backlogTasks}</div>
+        <div className={`todoTasks group`}>{todoTasks}</div>
+        <div className={`inProgressTasks group`}>{inProgressTasks}</div>
+        <div className={`readyTasks group`}>{readyTasks}</div>
+        props.modalIsActive?
+        <ShowTaskInModal activeTask={props.activeTask} />
+        :null
       </div>
-      <div className={`${style.todoTasks} ${style.group}`}>{todoTasks}</div>
-      <div className={`${style.inProgressTasks} ${style.group}`}>
-        {inProgressTasks}
-      </div>
-      <div className={`${style.readyTasks} ${style.group}`}>{readyTasks}</div>
-      props.modalIsActive?<ShowTaskInModal />:null
-    </div>
-    
+    </>
   );
 };
 
-const mapStateToProps = (state:AppStateType) => {
+const mapStateToProps = (state: AppStateType) => {
   return {
     tasks: state.tasksPage.tasks,
-    modal: state.modalPage.modalIsActive
+    modalIsActive: state.modalPage.modalIsActive,
+    activeTask: state.modalPage.activeTask,
   };
 };
 
-const TasksContainer = connect(mapStateToProps, {getTasksFetch})(Tasks);
+const TasksContainer = connect(mapStateToProps, { getTasksFetch })(Tasks);
 
 export default TasksContainer;
