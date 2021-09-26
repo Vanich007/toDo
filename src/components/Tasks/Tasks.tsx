@@ -15,7 +15,7 @@ import { ShowTaskInModal } from "../Modal/Modal";
 export const Tasks: React.FC = (props) => {
   const tasks = useSelector(getTasks);
   const modalIsActive = useSelector(getModalIsActive);
-  const activeTask = useSelector(getActiveTask);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export const Tasks: React.FC = (props) => {
         <div className={`todoTasks group`}>{todoTasks}</div>
         <div className={`inProgressTasks group`}>{inProgressTasks}</div>
         <div className={`readyTasks group`}>{readyTasks}</div>
-        {modalIsActive ? <ShowTaskInModal activeTask={activeTask} /> : null}
+        {modalIsActive ? <ShowTaskInModal /> : null}
       </div>
     </>
   );

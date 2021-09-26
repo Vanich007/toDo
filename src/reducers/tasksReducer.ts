@@ -1,23 +1,28 @@
 import { InferActionTypes } from "../reduxStore";
-import  {Dispatch} from 'redux';
-const Backlog="Backlog", toDo="To Do",inProgress ="In Progress",ready='Ready'
-type StatusType=typeof Backlog|typeof toDo|typeof inProgress|typeof ready
-export type TaskType={
-    status: StatusType,
-    id: number,
-    taskName: string,
-    deadline: number,
-}
+import { Dispatch } from "redux";
+const Backlog = "Backlog",
+  toDo = "To Do",
+  inProgress = "In Progress",
+  ready = "Ready";
+type StatusType =
+  | typeof Backlog
+  | typeof toDo
+  | typeof inProgress
+  | typeof ready;
+export type TaskType = {
+  status: StatusType;
+  id: number;
+  taskName: string;
+  deadline: number;
+};
 
 const defaultstate = {
-    tasks: [] as Array<TaskType>
-  }; 
-
+  tasks: [] as Array<TaskType>,
+};
 
 export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
   let newState = { ...state };
   switch (action.type) {
-    
     case "GOTTASKS":
       if (action.tasks) {
         newState.tasks = [...action.tasks];
@@ -25,39 +30,46 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
         newState.tasks = [];
       }
       return newState;
+    case "CHANGETASK":
+      let id = action.task.id;
+      const index = newState.tasks.findIndex((item) => item.id === id);
+      const before = newState.tasks.slice(0, index);
+      const after = newState.tasks.slice(index + 1);
+      newState.tasks = [...before, action.task, ...after];
 
+      return newState;
 
     default:
       return state;
   }
 };
 type ActionTypes = InferActionTypes<typeof actions>;
-type DispatchType=Dispatch<ActionTypes>
+type DispatchType = Dispatch<ActionTypes>;
 
 export let actions = {
   onGotTasks: (tasks: Array<TaskType>) => {
     return { tasks, type: "GOTTASKS" } as const;
   },
-
+  onTaskChange: (task: TaskType) => {
+    return { task, type: "CHANGETASK" } as const;
+  },
 };
 
-
 export const getTasksFetch = () => {
-  return (dispatch:any) => {
-      return fetch("http://localhost:5000/tasks", {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json'
+  return (dispatch: any) => {
+    return fetch("http://localhost:5000/tasks", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          dispatch(actions.onGotTasks(data));
         }
-      })
-        .then(resp => resp.json())
-        .then(data => {
-          
-          if (data.message) {
-            console.error(data.message)
-          } else {
-            dispatch(actions.onGotTasks(data))
-          }
-        })
-  }
-}
+      });
+  };
+};

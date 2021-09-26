@@ -2,29 +2,41 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
-import { TaskType } from "../../reducers/tasksReducer";
+import { actions, TaskType } from "../../reducers/tasksReducer";
+import { getActiveTask, getTemporaryTask } from "../../selectors/taskSelectors";
+import { AnyIfEmpty, useDispatch, useSelector } from "react-redux";
+import { EditTask } from "../Tasks/EditTask";
 
-export function ShowTaskInModal(props: TaskType) {
-  console.log(props);
+export function ShowTaskInModal(props: any) {
+  const activeTask = useSelector(getActiveTask);
+  const temporaryTask = useSelector(getTemporaryTask);
+  const dispatch = useDispatch();
+
   const [show, setShow] = useState(true);
 
   const handleSaveClose = () => {
+    dispatch(actions.onTaskChange(temporaryTask));
     setShow(false);
-    console.log("cancel");
   };
   const handleCancelClose = () => {
     setShow(false);
-    console.log("save");
   };
-  const handleShow = () => setShow(true);
+  // const handleShow = () => setShow(true);
 
   return (
     <>
       <Modal show={show} onHide={handleCancelClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{props.taskName}</Modal.Title>
+          <Modal.Title>{activeTask.taskName}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+          <EditTask
+            taskName={activeTask.taskName}
+            status={activeTask.status}
+            deadline={activeTask.deadline}
+            id={activeTask.id}
+          />
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCancelClose}>
             Cancel
