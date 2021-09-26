@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 //import Modal from '../common/Modal'
-import "./Tasks.scss";
+//import "./Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
 import { ShowTaskInModal } from "../Modal/Modal";
 //import { ActionTypes } from "../../reducers/modalReducer";

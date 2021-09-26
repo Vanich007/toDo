@@ -1,8 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import TasksContainer from "./components/Tasks/Tasks";
+import { Tasks } from "./components/Tasks/Tasks";
 
 function App() {
-  return <TasksContainer />;
+  return <Tasks />;
 }
 
 export default App;
