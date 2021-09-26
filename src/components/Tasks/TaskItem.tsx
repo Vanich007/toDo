@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-//import Modal from '../common/Modal'
-//import "./Tasks.scss";
+import "./Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
 import { ShowTaskInModal } from "../Modal/Modal";
-//import { ActionTypes } from "../../reducers/modalReducer";
+import { actions } from "../../reducers/modalReducer";
+import { useDispatch } from "react-redux";
 type TaskItemPropsType = { task: TaskType };
 
 export function TaskItem(props: TaskItemPropsType) {
+  const dispatch = useDispatch();
+
   let [showModal, setShowModal] = useState(false);
+
   const deadlineDate = new Date(props.task.deadline);
   const deadlineDateFormatted = `${deadlineDate.getDate()}.${
     deadlineDate.getMonth() + 1
@@ -16,7 +19,9 @@ export function TaskItem(props: TaskItemPropsType) {
 
   const deadlinesoon = +deadlineDate - Date.now() > 259200000 ? false : true;
   const deadlineoff = Date.now() > +deadlineDate ? true : false;
-  const setModalTask = () => {}; //props.setModalTask(props.task);
+  const setModalTask = () => {
+    dispatch(actions.setModalTask(props.task));
+  }; //props.setModalTask(props.task);
 
   return (
     <div

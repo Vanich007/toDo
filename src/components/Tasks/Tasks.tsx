@@ -70,9 +70,7 @@ export const Tasks: React.FC = (props) => {
         <div className={`todoTasks group`}>{todoTasks}</div>
         <div className={`inProgressTasks group`}>{inProgressTasks}</div>
         <div className={`readyTasks group`}>{readyTasks}</div>
-        modalIsActive?
-        <ShowTaskInModal activeTask={activeTask} />
-        :null
+        {modalIsActive ? <ShowTaskInModal activeTask={activeTask} /> : null}
       </div>
     </>
   );
