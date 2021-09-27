@@ -47,7 +47,7 @@ export function EditTask(props: any) {
 
   const Blur = (type: string) => {
     //event.preventDefault()
-    console.log(type);
+    // console.log(type);
     switch (type) {
       case "status":
         setStatusIsEditing(false);

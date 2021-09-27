@@ -1,5 +1,5 @@
 import { InferActionTypes } from "../reduxStore";
-import { Dispatch } from "redux";
+//import { Dispatch } from "redux";
 const Backlog = "Backlog",
   toDo = "To Do",
   inProgress = "In Progress",
@@ -18,33 +18,41 @@ export type TaskType = {
 
 const defaultstate = {
   tasks: [] as Array<TaskType>,
+  maxId: 0 as Number,
 };
+type defaultStateType = typeof defaultstate;
 
 export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
-  let newState = { ...state };
+  let newState = { ...state } as defaultStateType;
   switch (action.type) {
     case "GOTTASKS":
       if (action.tasks) {
         newState.tasks = [...action.tasks];
+        for (let i of action.tasks)
+          if (newState.maxId < i.id) newState.maxId = i.id;
       } else {
         newState.tasks = [];
+        newState.maxId = 0;
       }
       return newState;
     case "CHANGETASK":
       let id = action.task.id;
       const index = newState.tasks.findIndex((item) => item.id === id);
-      const before = newState.tasks.slice(0, index);
-      const after = newState.tasks.slice(index + 1);
-      newState.tasks = [...before, action.task, ...after];
-
+      if (index > -1) {
+        const before = newState.tasks.slice(0, index);
+        const after = newState.tasks.slice(index + 1);
+        newState.tasks = [...before, action.task, ...after];
+      } else newState.tasks = [...state.tasks, action.task];
       return newState;
-
+    case "DELETETASK":
+      newState.tasks = [...state.tasks.filter((item) => item.id !== action.id)];
+      return newState;
     default:
       return state;
   }
 };
 type ActionTypes = InferActionTypes<typeof actions>;
-type DispatchType = Dispatch<ActionTypes>;
+//type DispatchType = Dispatch<ActionTypes>;
 
 export let actions = {
   onGotTasks: (tasks: Array<TaskType>) => {
@@ -52,6 +60,9 @@ export let actions = {
   },
   onTaskChange: (task: TaskType) => {
     return { task, type: "CHANGETASK" } as const;
+  },
+  onTaskDelete: (id: number) => {
+    return { id, type: "DELETETASK" } as const;
   },
 };
 

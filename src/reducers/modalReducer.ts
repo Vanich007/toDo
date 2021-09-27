@@ -5,6 +5,7 @@ type defaultstateType = {
   activeTask: TaskType;
   temporaryTask: TaskType;
   modalIsActive: boolean;
+  isNewTask: boolean;
 };
 
 const clearTask: TaskType = {
@@ -18,6 +19,7 @@ const defaultstate: defaultstateType = {
   activeTask: clearTask,
   temporaryTask: clearTask,
   modalIsActive: false,
+  isNewTask: false,
 };
 
 export const modalReducer = (state = defaultstate, action: ActionTypes) => {

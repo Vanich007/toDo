@@ -6,7 +6,7 @@ $orange: orange;
 $red: red;
 @mixin flexible() {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 @mixin border-radius($radius) {
@@ -31,17 +31,29 @@ $red: red;
   @include flexible();
   background: $containerbackgroundcolor;
   flex-direction: row;
+  width: 80%;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+.double-row {
+  @include flexible();
 }
 .group {
   @include border-radius(8px);
-  background: groupbackgroundcolor;
+  background: $groupbackgroundcolor;
   padding: 10px;
   background-position: left;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 10px;
-  margin: 10px;
+  margin: 10px 5px 10px 5px;
+  width: 45%;
+}
+.group-wrapper {
+  width: 100%;
+  margin: 5%;
 }
 .task_item {
   @include border-radius(8px);
@@ -50,6 +62,7 @@ $red: red;
   box-shadow: 0px 16px 32px #00000014, 0px 4px 8px #0000001f;
   font-size: 14px;
   font-family: Helvetica, sans-serif;
+  cursor: pointer;
 }
 
 .deadlinesoon {
@@ -90,4 +103,20 @@ $red: red;
 .readyTasks:before {
   content: "Designed";
   @include column-header();
+}
+.add_task_button {
+  background: #337ab7 no-repeat url("https://craftt.ru/images/post_add.png");
+  background-position: center;
+  padding: 0 20px;
+  width: 70px;
+  height: 70px;
+  color: #fff;
+  margin-left: 15px;
+  float: left;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 30px;
+  right: 50px;
+  opacity: 0.7;
+  z-index: 5;
 }
