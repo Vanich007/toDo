@@ -54,7 +54,9 @@ export const Tasks: React.FC = (props) => {
     READY: null,
   };
   for (let i in ItemTypes) {
+    //@ts-ignore
     taskItemsByStatuses[i] = tasks
+      //@ts-ignore
       .filter((item) => item.status === ItemTypes[i])
       .map((item) => {
         return (

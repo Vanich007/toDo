@@ -28,8 +28,8 @@ export function TaskItem(props: TaskItemPropsType) {
   return (
     <div
       onClick={setModalTask}
-      className={`task_item ${deadlinesoon ? "deadlinesoon" : null} ${
-        deadlineoff ? "deadlineoff" : null
+      className={`task_item ${deadlinesoon ? "deadlinesoon" : ""} ${
+        deadlineoff ? "deadlineoff" : ""
       }`}
     >
       <div className="taskname">{props.task.taskName}</div>
