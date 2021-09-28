@@ -4,7 +4,7 @@ const Backlog = "Backlog",
   toDo = "To Do",
   inProgress = "In Progress",
   ready = "Ready";
-type StatusType =
+export type StatusType =
   | typeof Backlog
   | typeof toDo
   | typeof inProgress

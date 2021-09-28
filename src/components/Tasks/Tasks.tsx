@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TaskItem } from "./TaskItem";
 import "./Tasks.scss";
-import { getTasksFetch } from "../../reducers/tasksReducer";
+import { getTasksFetch, StatusType } from "../../reducers/tasksReducer";
 import {
   getModalIsActive,
   getTasks,
@@ -10,7 +10,25 @@ import {
 } from "../../selectors/taskSelectors";
 import { ShowTaskInModal } from "../Modal/Modal";
 import { actions } from "../../reducers/modalReducer";
-import { useHistory } from "react-router-dom";
+
+const Backlog = "Backlog";
+const ToDo = "To Do";
+const InProgress = "In Progress";
+const Ready = "Ready";
+
+type ItemTypesType = {
+  BACKLOG: typeof Backlog;
+  TODO: typeof ToDo;
+  INPROGRESS: typeof InProgress;
+  READY: typeof Ready;
+};
+
+const ItemTypes: ItemTypesType = {
+  BACKLOG: "Backlog",
+  TODO: "To Do",
+  INPROGRESS: "In Progress",
+  READY: "Ready",
+};
 
 export const Tasks: React.FC = (props) => {
   const tasks = useSelector(getTasks);
@@ -23,43 +41,29 @@ export const Tasks: React.FC = (props) => {
 
   //let tasks = [];
   //if (!projectsIsFetching)
-
-  const backlogTasks = tasks
-    .filter((item) => item.status === "Backlog")
-    .map((item) => {
-      return (
-        <div className="group-wrapper" key={item.id}>
-          <TaskItem task={item} />
-        </div>
-      );
-    });
-  const todoTasks = tasks
-    .filter((item) => item.status === "To Do")
-    .map((item) => {
-      return (
-        <div className="group-wrapper" key={item.id}>
-          <TaskItem task={item} />
-        </div>
-      );
-    });
-  const inProgressTasks = tasks
-    .filter((item) => item.status === "In Progress")
-    .map((item) => {
-      return (
-        <div className="group-wrapper" key={item.id}>
-          <TaskItem task={item} />
-        </div>
-      );
-    });
-  const readyTasks = tasks
-    .filter((item) => item.status === "Ready")
-    .map((item) => {
-      return (
-        <div className="group-wrapper" key={item.id}>
-          <TaskItem task={item} />
-        </div>
-      );
-    });
+  type taskItemsByStatusesType = {
+    BACKLOG: null | string;
+    TODO: null | string;
+    INPROGRESS: null | string;
+    READY: null | string;
+  };
+  let taskItemsByStatuses: taskItemsByStatusesType = {
+    BACKLOG: null,
+    TODO: null,
+    INPROGRESS: null,
+    READY: null,
+  };
+  for (let i in ItemTypes) {
+    taskItemsByStatuses[i] = tasks
+      .filter((item) => item.status === ItemTypes[i])
+      .map((item) => {
+        return (
+          <div className="group-wrapper" key={item.id}>
+            <TaskItem task={item} />
+          </div>
+        );
+      });
+  }
   let id = useSelector(getTasksMaxId) as number;
   id++;
   const newTask = () => {
@@ -74,23 +78,23 @@ export const Tasks: React.FC = (props) => {
     );
   };
   return (
-    <>
-      <div className="container">
-        <div className="double-row">
-          <div className="backlogTasks group">{backlogTasks}</div>
-          <div className="todoTasks group">{todoTasks}</div>
-        </div>
-        <div className="double-row">
-          <div className="inProgressTasks group">{inProgressTasks}</div>
-          <div className="readyTasks group">{readyTasks}</div>
-        </div>
-        {modalIsActive ? <ShowTaskInModal show={modalIsActive} /> : null}
-        <button
-          title="Add task"
-          className="add_task_button"
-          onClick={newTask}
-        ></button>
+    <div className="container">
+      <div className="double-row">
+        <div className="backlogTasks group">{taskItemsByStatuses.BACKLOG}</div>
+        <div className="todoTasks group">{taskItemsByStatuses.TODO}</div>
       </div>
-    </>
+      <div className="double-row">
+        <div className="inProgressTasks group">
+          {taskItemsByStatuses.INPROGRESS}
+        </div>
+        <div className="readyTasks group">{taskItemsByStatuses.READY}</div>
+      </div>
+      {modalIsActive ? <ShowTaskInModal show={modalIsActive} /> : null}
+      <button
+        title="Add task"
+        className="add_task_button"
+        onClick={newTask}
+      ></button>
+    </div>
   );
 };
