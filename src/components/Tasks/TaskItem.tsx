@@ -8,19 +8,18 @@ import { useDispatch } from "react-redux";
 import { DropTargetMonitor, useDrag, useDrop, XYCoord } from "react-dnd";
 
 type TaskItemPropsType = {
-  task: TaskType;
-  // text: string;
-  index: number;
-  moveListItem: any;
+  task: TaskType,
+  text: string,
+  index: number,
+  moveListItem: any,
 };
 
 export const TaskItem: FC<TaskItemPropsType> = ({
-  // text,
+  text,
   index,
   moveListItem,
   task,
 }) => {
-  console.log(task);
   const [{ isDragging }, dragRef] = useDrag({
     type: "item",
     item: { index },
@@ -29,25 +28,29 @@ export const TaskItem: FC<TaskItemPropsType> = ({
     }),
   });
 
-  interface DragItem {
-    index: number;
-    id: string;
-    type: string;
-  }
+  // interface DragItem {
+  //   index: number;
+  //   id: string;
+  //   type: string;
+  // }
 
   // useDrop - the list item is also a drop area
   const [spec, dropRef] = useDrop({
     accept: "item",
-    hover: (item: DragItem, monitor: DropTargetMonitor) => {
+    hover: (item: any, monitor) => {
+      //: DragItem
       const dragIndex = item.index;
       const hoverIndex = index;
+      //@ts-ignore
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
       if (hoverBoundingRect !== undefined) {
         const hoverMiddleY =
           (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
         const hoverActualY =
-          (monitor.getClientOffset() as XYCoord).y - hoverBoundingRect.top;
+          //@ts-ignore
+          monitor.getClientOffset().y - hoverBoundingRect.top;
 
         // if dragging down, continue only when hover is smaller than middle Y
         if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return;
@@ -60,7 +63,7 @@ export const TaskItem: FC<TaskItemPropsType> = ({
   });
 
   // Join the 2 refs together into one (both draggable and can be dropped on)
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef(null);
   const dragDropRef = dragRef(dropRef(ref));
 
   // Make items being dragged transparent, so it's easier to see where we drop them

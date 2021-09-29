@@ -35,7 +35,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
       <div className="item-wrapper" key={item.id}>
         <TaskItem
           index={index}
-          // text={item.taskName}
+          text={item.taskName}
           moveListItem={moveTaskListItem}
           key={item.id}
           task={item}
