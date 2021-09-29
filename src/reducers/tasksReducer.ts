@@ -34,6 +34,7 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
         newState.tasks = [];
         newState.maxId = 0;
       }
+
       return newState;
     case "CHANGETASK":
       let id = action.task.id;
@@ -43,6 +44,7 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
         const after = newState.tasks.slice(index + 1);
         newState.tasks = [...before, action.task, ...after];
       } else newState.tasks = [...state.tasks, action.task];
+
       return newState;
     case "DELETETASK":
       newState.tasks = [...state.tasks.filter((item) => item.id !== action.id)];

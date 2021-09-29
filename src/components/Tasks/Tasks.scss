@@ -62,10 +62,10 @@ $red: red;
     width: 80%;
   }
 }
-.group-wrapper {
-  width: 80%;
-  margin: auto;
-  margin-bottom: 3px;
+.item-wrapper {
+   width: 80%;
+  padding: 5px;
+  margin: 3px auto;
 }
 .task_item {
   @include border-radius(8px);

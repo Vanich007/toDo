@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TaskItem } from "./TaskItem";
 import "./Tasks.scss";
-import { getTasksFetch, StatusType } from "../../reducers/tasksReducer";
+import { getTasksFetch } from "../../reducers/tasksReducer";
 import {
   getModalIsActive,
   getTasks,
@@ -10,28 +9,27 @@ import {
 } from "../../selectors/taskSelectors";
 import { ShowTaskInModal } from "../Modal/Modal";
 import { actions } from "../../reducers/modalReducer";
+import { TasksGroup } from "./TasksGroup";
 
-const Backlog = "Backlog";
-const ToDo = "To Do";
-const InProgress = "In Progress";
-const Ready = "Ready";
+const ItemTypes = ["Backlog", "To Do", "In Progress", "Ready"];
 
-type ItemTypesType = {
-  BACKLOG: typeof Backlog;
-  TODO: typeof ToDo;
-  INPROGRESS: typeof InProgress;
-  READY: typeof Ready;
-};
+// type ItemTypesType = {
+//   BACKLOG: typeof Backlog;
+//   TODO: typeof ToDo;
+//   INPROGRESS: typeof InProgress;
+//   READY: typeof Ready;
+// };
 
-const ItemTypes: ItemTypesType = {
-  BACKLOG: "Backlog",
-  TODO: "To Do",
-  INPROGRESS: "In Progress",
-  READY: "Ready",
-};
+// const ItemTypes: ItemTypesType = {
+//   BACKLOG: "Backlog",
+//   TODO: "To Do",
+//   INPROGRESS: "In Progress",
+//   READY: "Ready",
+// };
 
 export const Tasks: React.FC = (props) => {
   const tasks = useSelector(getTasks);
+  console.log(tasks);
   const modalIsActive = useSelector(getModalIsActive);
   const dispatch = useDispatch();
 
@@ -41,31 +39,35 @@ export const Tasks: React.FC = (props) => {
 
   //let tasks = [];
   //if (!projectsIsFetching)
-  type taskItemsByStatusesType = {
-    BACKLOG: null | string;
-    TODO: null | string;
-    INPROGRESS: null | string;
-    READY: null | string;
-  };
-  let taskItemsByStatuses: taskItemsByStatusesType = {
-    BACKLOG: null,
-    TODO: null,
-    INPROGRESS: null,
-    READY: null,
-  };
-  for (let i in ItemTypes) {
-    //@ts-ignore
-    taskItemsByStatuses[i] = tasks
-      //@ts-ignore
-      .filter((item) => item.status === ItemTypes[i])
-      .map((item) => {
-        return (
-          <div className="group-wrapper" key={item.id}>
-            <TaskItem task={item} />
-          </div>
-        );
-      });
-  }
+  // type taskItemsByStatusesType = {
+  //   BACKLOG: null | string;
+  //   TODO: null | string;
+  //   INPROGRESS: null | string;
+  //   READY: null | string;
+  // };
+  // let taskItemsByStatuses: taskItemsByStatusesType = {
+  //   BACKLOG: null,
+  //   TODO: null,
+  //   INPROGRESS: null,
+  //   READY: null,
+  // };
+  // for (let i in ItemTypes) {
+  //   //@ts-ignore
+  //   taskItemsByStatuses[i] = tasks
+  //     //@ts-ignore
+  //     .filter((item) => item.status === ItemTypes[i])
+  //     .map((item) => {
+  //       return (
+  //         <div className="group-wrapper" key={item.id}>
+  //           <TaskItem task={item} />
+  //         </div>
+  //       );
+  //     });
+  // }
+  const grouppedTasks = ItemTypes.map((type) => {
+    return tasks.filter((item) => item.status === type);
+  });
+
   let id = useSelector(getTasksMaxId) as number;
   id++;
   const newTask = () => {
@@ -82,15 +84,23 @@ export const Tasks: React.FC = (props) => {
   return (
     <div className="container">
       <div className="double-row">
-        <div className="backlogTasks group">{taskItemsByStatuses.BACKLOG}</div>
-        <div className="todoTasks group">{taskItemsByStatuses.TODO}</div>
+        <div className="backlogTasks group">
+          <TasksGroup tasks={grouppedTasks[0]} />
+        </div>
+
+        <div className="todoTasks group">
+          <TasksGroup tasks={grouppedTasks[1]} />
+        </div>
       </div>
       <div className="double-row">
         <div className="inProgressTasks group">
-          {taskItemsByStatuses.INPROGRESS}
+          <TasksGroup tasks={grouppedTasks[2]} />
         </div>
-        <div className="readyTasks group">{taskItemsByStatuses.READY}</div>
+        <div className="readyTasks group">
+          <TasksGroup tasks={grouppedTasks[3]} />
+        </div>
       </div>
+
       {modalIsActive ? <ShowTaskInModal show={modalIsActive} /> : null}
       <button
         title="Add task"
