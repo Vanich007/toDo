@@ -8,7 +8,6 @@ type TasksGroupProps = {
 };
 
 export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
-  console.log("TasksGroup", props);
   let [tasks, setTasks] = useState([...props.tasks]);
   useEffect(() => {
     setTasks([...props.tasks]);
@@ -22,8 +21,6 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
         const updatedTasks = [...tasks];
         updatedTasks[dragIndex] = hoverItem;
         updatedTasks[hoverIndex] = dragItem;
-        console.log("updatedTasks", updatedTasks);
-
         return updatedTasks;
       });
     },

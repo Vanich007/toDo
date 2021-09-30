@@ -1,8 +1,7 @@
-//npm install react-bootstrap@next bootstrap@5.1.1
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { useEffect, useState } from "react";
-import { actions, TaskType } from "../../reducers/tasksReducer";
+import { useEffect } from "react";
+import { actions } from "../../reducers/tasksReducer";
 import { actions as modlaActions } from "../../reducers/modalReducer";
 import {
   getActiveTask,
@@ -16,7 +15,6 @@ import { useHistory } from "react-router-dom";
 export function ShowTaskInModal(props: any) {
   const activeTask = useSelector(getActiveTask);
   const modalIsActive = useSelector(getModalIsActive);
-  console.log("modalIsActive", modalIsActive);
   const history = useHistory();
 
   useEffect(() => {
@@ -27,26 +25,21 @@ export function ShowTaskInModal(props: any) {
   }, [activeTask.id]);
 
   const temporaryTask = useSelector(getTemporaryTask);
-  //const isNewTask = useSelector(getIsNewTask);
-  const dispatch = useDispatch();
 
-  //const [show, setShow] = useState(props.show);
+  const dispatch = useDispatch();
 
   const handleSaveClose = () => {
     dispatch(actions.onTaskChange(temporaryTask));
-    // setShow(false);
+
     dispatch(modlaActions.turnOffModal());
   };
   const handleCancelClose = () => {
     dispatch(modlaActions.turnOffModal());
-    //setShow(false);
-    //if (isNewTask) dispatch(actions.deleteNewTask(activeTask));
   };
   const deleteTaskItem = () => {
     dispatch(actions.onTaskDelete(activeTask.id));
     dispatch(modlaActions.turnOffModal());
   };
-  // const handleShow = () => setShow(true);
 
   return (
     <>
@@ -67,13 +60,9 @@ export function ShowTaskInModal(props: any) {
           <Button variant="primary" onClick={handleSaveClose}>
             Save Changes
           </Button>
-          <button
-            type="button"
-            onClick={deleteTaskItem}
-            className="btn btn-danger"
-          >
+          <Button onClick={deleteTaskItem} variant="danger">
             Delete
-          </button>
+          </Button>
           <Button variant="secondary" onClick={handleCancelClose}>
             Cancel
           </Button>

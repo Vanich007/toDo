@@ -40,14 +40,11 @@ export function EditTask(props: any) {
         break;
       case "deadline":
         setDeadlineState(event.target.value);
-        //console.log(event.target.value);
-        break;
+                break;
     }
   };
 
   const Blur = (type: string) => {
-    //event.preventDefault()
-    // console.log(type);
     switch (type) {
       case "status":
         setStatusIsEditing(false);

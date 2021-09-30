@@ -1,11 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Tasks } from "./components/Tasks/Tasks";
 import { BrowserRouter as Router } from "react-router-dom";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
   return (
     <Router>
-      <Tasks />;
+      <DndProvider backend={HTML5Backend}>
+        <Tasks />;
+      </DndProvider>
     </Router>
   );
 }

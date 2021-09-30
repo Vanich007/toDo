@@ -23,7 +23,7 @@ $red: red;
   font-family: SF Pro Display;
   font-style: normal;
   font-weight: bold;
-  font-size: 37px;
+  font-size: 26px;
   line-height: 44px;
 }
 
@@ -63,7 +63,7 @@ $red: red;
   }
 }
 .item-wrapper {
-   width: 80%;
+  width: 80%;
   padding: 5px;
   margin: 3px auto;
 }
@@ -118,7 +118,8 @@ $red: red;
   @include column-header();
 }
 .add_task_button {
-  background: #337ab7 no-repeat url("https://craftt.ru/images/post_add.png");
+  background: $itembackgroundcolor no-repeat
+    url("https://craftt.ru/images/post_add.png");
   background-position: center;
   padding: 0 20px;
   width: 70px;

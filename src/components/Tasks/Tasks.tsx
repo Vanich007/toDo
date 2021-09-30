@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./Tasks.scss";
-import { getTasksFetch } from "../../reducers/tasksReducer";
+import {
+  getTasksFetch,
+  Backlog,
+  toDo,
+  inProgress,
+  ready,
+} from "../../reducers/tasksReducer";
 import {
   getModalIsActive,
   getTasks,
@@ -11,7 +17,7 @@ import { ShowTaskInModal } from "../Modal/Modal";
 import { actions } from "../../reducers/modalReducer";
 import { TasksGroup } from "./TasksGroup";
 
-const ItemTypes = ["Backlog", "To Do", "In Progress", "Ready"];
+const ItemTypes = [Backlog, toDo, inProgress, ready];
 
 // type ItemTypesType = {
 //   BACKLOG: typeof Backlog;
@@ -29,7 +35,6 @@ const ItemTypes = ["Backlog", "To Do", "In Progress", "Ready"];
 
 export const Tasks: React.FC = (props) => {
   const tasks = useSelector(getTasks);
-  console.log(tasks);
   const modalIsActive = useSelector(getModalIsActive);
   const dispatch = useDispatch();
 

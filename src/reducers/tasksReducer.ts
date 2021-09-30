@@ -1,6 +1,6 @@
 import { InferActionTypes } from "../reduxStore";
 //import { Dispatch } from "redux";
-const Backlog = "Backlog",
+export const Backlog = "Backlog",
   toDo = "To Do",
   inProgress = "In Progress",
   ready = "Ready";
