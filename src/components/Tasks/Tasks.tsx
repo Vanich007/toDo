@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./Tasks.scss";
 import {
@@ -27,10 +27,11 @@ export const Tasks: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getTasksFetch());
+    dispatch(getTasksFetch()); //get Tasks from json-server
   }, []);
 
   const grouppedTasks = ItemTypes.map((type) => {
+    //group array by statuses
     return tasks.filter((item) => item.status === type);
   });
 
@@ -40,6 +41,7 @@ export const Tasks: React.FC = () => {
     const deadline = Date.now();
     dispatch(
       actions.setModalTask({
+        //form data for Modal editing window
         id,
         status: toDo,
         taskName: "New Task",
@@ -47,8 +49,6 @@ export const Tasks: React.FC = () => {
       })
     );
   };
-
-  // useDrop - the list item is also a drop area
 
   return (
     <div className="container">
@@ -100,17 +100,15 @@ export const Tasks: React.FC = () => {
   );
 };
 
-const DroapableDiv = (props: any) => {
+const DroapableDiv = memo((props: any) => {
   const dispatch = useDispatch();
   const [spec, drop] = useDrop({
     accept: "item",
     drop: (item: any, monitor) => {
-      console.log(props.className, item.allTasksId);
-
       const droppedAllTasksIndex = item.allTasksId;
       if (props.allTasks[droppedAllTasksIndex].status === props.status)
         return null;
-      //изменить статус  на статус группы-приемника
+      //if item with another status, change status
       dispatch(
         tasksActions.onChangeTaskStatus(
           props.allTasks[droppedAllTasksIndex].id,
@@ -125,4 +123,4 @@ const DroapableDiv = (props: any) => {
       {props.children}
     </div>
   );
-};
+})

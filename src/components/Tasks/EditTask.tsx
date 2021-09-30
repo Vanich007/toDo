@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch } from "react-redux";
 import { actions } from "../../reducers/modalReducer";
+import { StatusType } from "../../reducers/tasksReducer";
 
-//форма для коректировки зyarnадачи
-export function EditTask(props: any) {
+type EditTaskPropsType = {
+  taskName: string;
+  status: StatusType;
+  deadline: number;
+  id: number;
+  show: boolean;
+};
+
+export const EditTask: FC<EditTaskPropsType> = (props) => {
   const dispatch = useDispatch();
   const statuses = ["Backlog", "To Do", "In Progress", "Ready"];
   let [statusState, setStatusState] = useState(props.status);
   let [taskNameState, setTaskNameState] = useState(props.taskName);
-  let [deadlineState, setDeadlineState] = useState(props.deadline);
+  let [deadlineState, setDeadlineState] = useState(new Date(props.deadline));
 
   let [statusIsEditing, setStatusIsEditing] = useState(false);
   let [taskNameIsEditing, setTaskNameIsEditing] = useState(false);
@@ -27,8 +35,6 @@ export function EditTask(props: any) {
       document.getElementById("status").focus();
     }
   }, [statusIsEditing]);
-  //   useEffect(() => setStatusState(status), [props.status]);
-  //   useEffect(() => setTaskNameState(taskName), [taskName]);
 
   const handleChange = (event: any) => {
     switch (event.target.name) {
@@ -40,7 +46,7 @@ export function EditTask(props: any) {
         break;
       case "deadline":
         setDeadlineState(event.target.value);
-                break;
+        break;
     }
   };
 
@@ -80,7 +86,9 @@ export function EditTask(props: any) {
         </option>
       );
   });
-
+  type DateNull = {
+    date: Date | null;
+  };
   return (
     <div className="form-group form-control-lg">
       {statusIsEditing ? (
@@ -150,6 +158,7 @@ export function EditTask(props: any) {
       </label>
       <DatePicker
         selected={deadlineState}
+        //@ts-ignore
         onChange={(date) => setDeadlineState(date)}
         onCalendarClose={() => Blur("deadline")}
         name="deadline"
@@ -158,4 +167,4 @@ export function EditTask(props: any) {
       />
     </div>
   );
-}
+};
