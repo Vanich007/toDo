@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <DndProvider backend={HTML5Backend}>
-        <Tasks />;
+        <Tasks />
       </DndProvider>
     </Router>
   );

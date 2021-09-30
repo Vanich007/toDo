@@ -37,8 +37,9 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
 
       return newState;
     case "CHANGETASK":
-      let id = action.task.id;
-      const index = newState.tasks.findIndex((item) => item.id === id);
+      const index = newState.tasks.findIndex(
+        (item) => item.id === action.task.id
+      );
       if (index > -1) {
         const before = newState.tasks.slice(0, index);
         const after = newState.tasks.slice(index + 1);
@@ -48,6 +49,11 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
       return newState;
     case "DELETETASK":
       newState.tasks = [...state.tasks.filter((item) => item.id !== action.id)];
+      return newState;
+    case "CHANGETASKSTATUS":
+      state.tasks[state.tasks.findIndex((i) => i.id === action.id)].status =
+        action.status;
+      newState.tasks = [...state.tasks];
       return newState;
     default:
       return state;
@@ -65,6 +71,9 @@ export let actions = {
   },
   onTaskDelete: (id: number) => {
     return { id, type: "DELETETASK" } as const;
+  },
+  onChangeTaskStatus: (id: number, status: StatusType) => {
+    return { id, status, type: "CHANGETASKSTATUS" } as const;
   },
 };
 

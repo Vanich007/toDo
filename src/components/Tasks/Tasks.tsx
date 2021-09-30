@@ -16,24 +16,12 @@ import {
 import { ShowTaskInModal } from "../Modal/Modal";
 import { actions } from "../../reducers/modalReducer";
 import { TasksGroup } from "./TasksGroup";
+import { useDrop } from "react-dnd";
+import { actions as tasksActions } from "../../reducers/tasksReducer";
 
 const ItemTypes = [Backlog, toDo, inProgress, ready];
 
-// type ItemTypesType = {
-//   BACKLOG: typeof Backlog;
-//   TODO: typeof ToDo;
-//   INPROGRESS: typeof InProgress;
-//   READY: typeof Ready;
-// };
-
-// const ItemTypes: ItemTypesType = {
-//   BACKLOG: "Backlog",
-//   TODO: "To Do",
-//   INPROGRESS: "In Progress",
-//   READY: "Ready",
-// };
-
-export const Tasks: React.FC = (props) => {
+export const Tasks: React.FC = () => {
   const tasks = useSelector(getTasks);
   const modalIsActive = useSelector(getModalIsActive);
   const dispatch = useDispatch();
@@ -42,33 +30,6 @@ export const Tasks: React.FC = (props) => {
     dispatch(getTasksFetch());
   }, []);
 
-  //let tasks = [];
-  //if (!projectsIsFetching)
-  // type taskItemsByStatusesType = {
-  //   BACKLOG: null | string;
-  //   TODO: null | string;
-  //   INPROGRESS: null | string;
-  //   READY: null | string;
-  // };
-  // let taskItemsByStatuses: taskItemsByStatusesType = {
-  //   BACKLOG: null,
-  //   TODO: null,
-  //   INPROGRESS: null,
-  //   READY: null,
-  // };
-  // for (let i in ItemTypes) {
-  //   //@ts-ignore
-  //   taskItemsByStatuses[i] = tasks
-  //     //@ts-ignore
-  //     .filter((item) => item.status === ItemTypes[i])
-  //     .map((item) => {
-  //       return (
-  //         <div className="group-wrapper" key={item.id}>
-  //           <TaskItem task={item} />
-  //         </div>
-  //       );
-  //     });
-  // }
   const grouppedTasks = ItemTypes.map((type) => {
     return tasks.filter((item) => item.status === type);
   });
@@ -80,30 +41,53 @@ export const Tasks: React.FC = (props) => {
     dispatch(
       actions.setModalTask({
         id,
-        status: "To Do",
+        status: toDo,
         taskName: "New Task",
         deadline,
       })
     );
   };
+
+  // useDrop - the list item is also a drop area
+
   return (
     <div className="container">
       <div className="double-row">
-        <div className="backlogTasks group">
-          <TasksGroup tasks={grouppedTasks[0]} />
-        </div>
-
-        <div className="todoTasks group">
-          <TasksGroup tasks={grouppedTasks[1]} />
-        </div>
+        <DroapableDiv
+          className="backlogTasks group"
+          status={ItemTypes[0]}
+          tasks={grouppedTasks[0]}
+          allTasks={tasks}
+        >
+          <TasksGroup tasks={grouppedTasks[0]} allTasks={tasks} />
+        </DroapableDiv>
+        <DroapableDiv
+          className="todoTasks group"
+          status={ItemTypes[1]}
+          tasks={grouppedTasks[1]}
+          allTasks={tasks}
+        >
+          <TasksGroup tasks={grouppedTasks[1]} allTasks={tasks} />
+        </DroapableDiv>
       </div>
       <div className="double-row">
-        <div className="inProgressTasks group">
-          <TasksGroup tasks={grouppedTasks[2]} />
-        </div>
-        <div className="readyTasks group">
-          <TasksGroup tasks={grouppedTasks[3]} />
-        </div>
+        <DroapableDiv
+          className="inProgressTasks group"
+          status={ItemTypes[2]}
+          tasks={grouppedTasks[2]}
+          allTasks={tasks}
+        >
+          <TasksGroup tasks={grouppedTasks[2]} allTasks={tasks} />
+        </DroapableDiv>
+
+        <DroapableDiv
+          className="readyTasks group"
+          status={ItemTypes[3]}
+          tasks={grouppedTasks[3]}
+          allTasks={tasks}
+        >
+          <TasksGroup tasks={grouppedTasks[3]} allTasks={tasks} />
+        </DroapableDiv>
       </div>
 
       {modalIsActive ? <ShowTaskInModal show={modalIsActive} /> : null}
@@ -112,6 +96,33 @@ export const Tasks: React.FC = (props) => {
         className="add_task_button"
         onClick={newTask}
       ></button>
+    </div>
+  );
+};
+
+const DroapableDiv = (props: any) => {
+  const dispatch = useDispatch();
+  const [spec, drop] = useDrop({
+    accept: "item",
+    drop: (item: any, monitor) => {
+      console.log(props.className, item.allTasksId);
+
+      const droppedAllTasksIndex = item.allTasksId;
+      if (props.allTasks[droppedAllTasksIndex].status === props.status)
+        return null;
+      //изменить статус  на статус группы-приемника
+      dispatch(
+        tasksActions.onChangeTaskStatus(
+          props.allTasks[droppedAllTasksIndex].id,
+          props.status
+        )
+      );
+    },
+  });
+
+  return (
+    <div ref={drop} className={props.className}>
+      {props.children}
     </div>
   );
 };

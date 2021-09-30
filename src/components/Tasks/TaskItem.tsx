@@ -1,46 +1,47 @@
 import { useRef, FC } from "react";
 import "./Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
-//import { ShowTaskInModal } from "../Modal/Modal";
 import { actions as modalActions } from "../../reducers/modalReducer";
 import { useDispatch } from "react-redux";
-
 import { DropTargetMonitor, useDrag, useDrop, XYCoord } from "react-dnd";
 
 type TaskItemPropsType = {
-  task: TaskType,
-  text: string,
-  index: number,
-  moveListItem: any,
+  task: TaskType;
+  index: number;
+  moveListItem: any;
+  allTasksId: number;
 };
 
 export const TaskItem: FC<TaskItemPropsType> = ({
-  text,
+  allTasksId,
   index,
   moveListItem,
   task,
 }) => {
   const [{ isDragging }, dragRef] = useDrag({
     type: "item",
-    item: { index },
+    item: { index, allTasksId },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
-  // interface DragItem {
-  //   index: number;
-  //   id: string;
-  //   type: string;
-  // }
+  interface DragItem {
+    index: number;
+    id: string;
+    type: string;
+    allTasksId: number;
+  }
 
   // useDrop - the list item is also a drop area
   const [spec, dropRef] = useDrop({
     accept: "item",
-    hover: (item: any, monitor) => {
-      //: DragItem
+    hover: (item: DragItem, monitor) => {
       const dragIndex = item.index;
       const hoverIndex = index;
+      const dragAllTasksIndex = item.allTasksId;
+      const hoverAllTasksIndex = allTasksId;
+      //console.log(dragIndex, dragAllTasksIndex, hoverIndex, hoverAllTasksIndex);
       //@ts-ignore
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
 
@@ -57,7 +58,12 @@ export const TaskItem: FC<TaskItemPropsType> = ({
         // if dragging up, continue only when hover is bigger than middle Y
         if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return;
       }
-      moveListItem(dragIndex, hoverIndex);
+      moveListItem(
+        dragIndex,
+        hoverIndex,
+        dragAllTasksIndex,
+        hoverAllTasksIndex
+      );
       item.index = hoverIndex;
     },
   });

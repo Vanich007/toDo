@@ -30,15 +30,17 @@ export function ShowTaskInModal(props: any) {
 
   const handleSaveClose = () => {
     dispatch(actions.onTaskChange(temporaryTask));
-
     dispatch(modlaActions.turnOffModal());
+    history.push({ pathname: "/" });
   };
   const handleCancelClose = () => {
     dispatch(modlaActions.turnOffModal());
+    history.push({ pathname: "/" });
   };
   const deleteTaskItem = () => {
     dispatch(actions.onTaskDelete(activeTask.id));
     dispatch(modlaActions.turnOffModal());
+    history.push({ pathname: "/" });
   };
 
   return (

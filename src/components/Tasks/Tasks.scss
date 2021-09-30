@@ -31,7 +31,9 @@ $red: red;
   @include flexible();
   background: $containerbackgroundcolor;
   flex-direction: row;
+  align-items: flex-start;
   width: 100%;
+  max-width: 1600px;
   @media (max-width: 768px) {
     flex-direction: column;
   }
