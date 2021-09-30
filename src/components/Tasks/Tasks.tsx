@@ -1,4 +1,4 @@
-import React, { useEffect,memo } from "react";
+import React, { useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./Tasks.scss";
 import {
@@ -109,6 +109,7 @@ const DroapableDiv = memo((props: any) => {
       if (props.allTasks[droppedAllTasksIndex].status === props.status)
         return null;
       //if item with another status, change status
+
       dispatch(
         tasksActions.onChangeTaskStatus(
           props.allTasks[droppedAllTasksIndex].id,
@@ -123,4 +124,4 @@ const DroapableDiv = memo((props: any) => {
       {props.children}
     </div>
   );
-})
+});
