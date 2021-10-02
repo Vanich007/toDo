@@ -1,4 +1,4 @@
-import { useRef, FC, memo } from "react";
+import React, { useRef, FC, memo } from "react";
 import "./Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
 import { actions as modalActions } from "../../reducers/modalReducer";
@@ -65,8 +65,10 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
     });
 
     // Join the 2 refs together into one (both draggable and can be dropped on)
-    const ref = useRef(null);
-    const dragDropRef = dragRef(dropRef(ref));
+    type inputRefType = React.RefObject<HTMLDivElement>;
+    const ref: inputRefType = useRef(null);
+
+    let dragDropRef = dragRef(dropRef(ref));
 
     // Make items being dragged transparent, so it's easier to see where we drop them
     const opacity = isDragging ? 0 : 1;

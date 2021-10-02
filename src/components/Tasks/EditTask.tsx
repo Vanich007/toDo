@@ -25,14 +25,12 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
 
   useEffect(() => {
     if (taskNameIsEditing) {
-      // @ts-ignore
-      document.getElementById("taskName").focus();
+      (document.getElementById("taskName") as HTMLFormElement).focus();
     }
   }, [taskNameIsEditing]);
   useEffect(() => {
     if (statusIsEditing) {
-      // @ts-ignore
-      document.getElementById("status").focus();
+      (document.getElementById("status") as HTMLFormElement).focus();
     }
   }, [statusIsEditing]);
 
@@ -86,9 +84,7 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
         </option>
       );
   });
-  type DateNull = {
-    date: Date | null;
-  };
+
   return (
     <div className="form-group form-control-lg">
       {statusIsEditing ? (
@@ -119,8 +115,7 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
             className="form-control"
             type="text"
             placeholder={statusState}
-            //@ts-ignore
-            readonly
+            readOnly
           />
         </div>
       )}
@@ -148,8 +143,8 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
             className="form-control"
             type="text"
             placeholder={taskNameState}
-            //@ts-ignore
-            readonly
+            
+            readOnly
           />
         </div>
       )}
