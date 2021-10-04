@@ -34,16 +34,20 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
     }
   }, [statusIsEditing]);
 
-  const handleChange = (event: any) => {
+  const handleChange = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ): void => {
     switch (event.target.name) {
       case "status":
-        setStatusState(event.target.value);
+        setStatusState(event.target.value as StatusType);
         break;
       case "taskName":
         setTaskNameState(event.target.value);
         break;
       case "deadline":
-        setDeadlineState(event.target.value);
+        setDeadlineState(new Date(event.target.value));
         break;
     }
   };
@@ -143,7 +147,6 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
             className="form-control"
             type="text"
             placeholder={taskNameState}
-            
             readOnly
           />
         </div>

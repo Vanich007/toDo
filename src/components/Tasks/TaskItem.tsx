@@ -4,11 +4,17 @@ import { TaskType } from "../../reducers/tasksReducer";
 import { actions as modalActions } from "../../reducers/modalReducer";
 import { useDispatch } from "react-redux";
 import { DropTargetMonitor, useDrag, useDrop, XYCoord } from "react-dnd";
+import { DragItem } from "./Tasks";
 
 type TaskItemPropsType = {
   task: TaskType;
   index: number;
-  moveListItem: any;
+  moveListItem: (
+    dragIndex: number,
+    hoverIndex: number,
+    dragAllTasksIndex: number,
+    hoverAllTasksIndex: number
+  ) => void;
   allTasksId: number;
 };
 
@@ -21,13 +27,6 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
         isDragging: monitor.isDragging(),
       }),
     });
-
-    interface DragItem {
-      index: number;
-      id: string;
-      type: string;
-      allTasksId: number;
-    }
 
     // useDrop - the list item is also a drop area
     const [spec, dropRef] = useDrop({

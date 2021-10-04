@@ -7,6 +7,8 @@ import {
   toDo,
   inProgress,
   ready,
+  TaskType,
+  StatusType,
 } from "../../reducers/tasksReducer";
 import {
   getModalIsActive,
@@ -20,6 +22,12 @@ import { useDrop } from "react-dnd";
 import { actions as tasksActions } from "../../reducers/tasksReducer";
 
 const ItemTypes = [Backlog, toDo, inProgress, ready];
+export interface DragItem {
+  index: number;
+  id: string;
+  type: string;
+  allTasksId: number;
+}
 
 export const Tasks: React.FC = () => {
   const tasks = useSelector(getTasks);
@@ -100,11 +108,19 @@ export const Tasks: React.FC = () => {
   );
 };
 
-const DroapableDiv = memo((props: any) => {
+type DroapableDivPropsType = {
+  allTasks: Array<TaskType>;
+  className: string;
+  status: string;
+  tasks: Array<TaskType>;
+  children: JSX.Element;
+};
+
+const DroapableDiv = memo((props: DroapableDivPropsType) => {
   const dispatch = useDispatch();
   const [spec, drop] = useDrop({
     accept: "item",
-    drop: (item: any, monitor) => {
+    drop: (item: DragItem, monitor) => {
       const droppedAllTasksIndex = item.allTasksId;
       if (props.allTasks[droppedAllTasksIndex].status === props.status)
         return null;
@@ -113,7 +129,7 @@ const DroapableDiv = memo((props: any) => {
       dispatch(
         tasksActions.onChangeTaskStatus(
           props.allTasks[droppedAllTasksIndex].id,
-          props.status
+          props.status as StatusType
         )
       );
     },

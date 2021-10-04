@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { actions } from "../../reducers/tasksReducer";
 import { actions as modlaActions } from "../../reducers/modalReducer";
 import {
@@ -11,8 +11,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { EditTask } from "../Tasks/EditTask";
 import { useHistory } from "react-router-dom";
-
-export function ShowTaskInModal(props: any) {
+type ShowTaskInModalPropsType = {
+  show: boolean;
+};
+export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
   const activeTask = useSelector(getActiveTask);
   const modalIsActive = useSelector(getModalIsActive);
   const history = useHistory();
@@ -72,4 +74,4 @@ export function ShowTaskInModal(props: any) {
       </Modal>
     </>
   );
-}
+};

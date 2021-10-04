@@ -1,5 +1,9 @@
+import { Dispatch } from "redux";
 import { InferActionTypes } from "../reduxStore";
+
 //import { Dispatch } from "redux";
+export type DispatchType = Dispatch<ActionTypes>;
+
 export const Backlog = "Backlog",
   toDo = "To Do",
   inProgress = "In Progress",
@@ -60,7 +64,6 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
   }
 };
 type ActionTypes = InferActionTypes<typeof actions>;
-//type DispatchType = Dispatch<ActionTypes>;
 
 export let actions = {
   onGotTasks: (tasks: Array<TaskType>) => {
@@ -78,7 +81,7 @@ export let actions = {
 };
 
 export const getTasksFetch = () => {
-  return (dispatch: any) => {
+  return (dispatch: DispatchType) => {
     return fetch("http://localhost:5000/tasks", {
       method: "GET",
       headers: {
