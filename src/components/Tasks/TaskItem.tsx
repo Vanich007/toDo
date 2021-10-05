@@ -1,4 +1,4 @@
-import React, { useRef, FC, memo } from "react";
+import React, { useRef, FC, memo, LegacyRef } from "react";
 import "./Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
 import { actions as modalActions } from "../../reducers/modalReducer";
@@ -31,22 +31,21 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
     // useDrop - the list item is also a drop area
     const [spec, dropRef] = useDrop({
       accept: "item",
-      hover: (item: DragItem, monitor) => {
+      hover: (item: DragItem, monitor: DropTargetMonitor) => {
         const dragIndex = item.index;
         const hoverIndex = index;
         const dragAllTasksIndex = item.allTasksId;
         const hoverAllTasksIndex = allTasksId;
-        //console.log(dragIndex, dragAllTasksIndex, hoverIndex, hoverAllTasksIndex);
-        //@ts-ignore
-        const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
+        let hoverBoundingRect;
+        if (ref.current)
+          hoverBoundingRect = ref.current.getBoundingClientRect();
 
         if (hoverBoundingRect !== undefined) {
           const hoverMiddleY =
             (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-          const hoverActualY =
-            //@ts-ignore
-            monitor.getClientOffset().y - hoverBoundingRect.top;
+          let hoverActualY = 0;
+          hoverActualY = monitor.getClientOffset()!.y - hoverBoundingRect.top;
 
           // if dragging down, continue only when hover is smaller than middle Y
           if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return;
@@ -63,13 +62,11 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
       },
     });
 
-    // Join the 2 refs together into one (both draggable and can be dropped on)
-    type inputRefType = React.RefObject<HTMLDivElement>;
-    const ref: inputRefType = useRef(null);
+    const ref = useRef<HTMLInputElement>(null);
 
     let dragDropRef = dragRef(dropRef(ref));
-
     // Make items being dragged transparent, so it's easier to see where we drop them
+
     const opacity = isDragging ? 0 : 1;
 
     const dispatch = useDispatch();
@@ -90,22 +87,22 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
     const setModalTask = () => {
       dispatch(modalActions.setModalTask(task));
     };
+    // Join the 2 refs together into one (both draggable and can be dropped on)
+    // type inputRefType = React.RefObject<HTMLDivElement>;
 
     return (
-      <>
-        <div
-          //@ts-ignore
-          ref={dragDropRef}
-          style={{ opacity }}
-          onClick={setModalTask}
-          className={`task_item ${deadlinesoon ? "deadlinesoon" : ""} ${
-            deadlineoff ? "deadlineoff" : ""
-          }`}
-        >
-          <div className="taskname">{task.taskName}</div>
-          {deadlineDateFormatted}
-        </div>
-      </>
+      <div
+        //@ts-ignore
+        ref={dragDropRef}
+        style={{ opacity }}
+        onClick={setModalTask}
+        className={`task_item ${deadlinesoon ? "deadlinesoon" : ""} ${
+          deadlineoff ? "deadlineoff" : ""
+        }`}
+      >
+        <div className="taskname">{task.taskName}</div>
+        {deadlineDateFormatted}
+      </div>
     );
   }
 );

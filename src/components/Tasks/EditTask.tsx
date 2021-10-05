@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch } from "react-redux";
+import { isNull } from "util";
 import { actions } from "../../reducers/modalReducer";
 import { StatusType } from "../../reducers/tasksReducer";
 
@@ -18,7 +19,9 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
   const statuses = ["Backlog", "To Do", "In Progress", "Ready"];
   let [statusState, setStatusState] = useState(props.status);
   let [taskNameState, setTaskNameState] = useState(props.taskName);
-  let [deadlineState, setDeadlineState] = useState(new Date(props.deadline));
+  let [deadlineState, setDeadlineState] = useState<null | Date>(
+    new Date(props.deadline)
+  );
 
   let [statusIsEditing, setStatusIsEditing] = useState(false);
   let [taskNameIsEditing, setTaskNameIsEditing] = useState(false);
@@ -61,7 +64,7 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
         setTaskNameIsEditing(false);
         break;
     }
-    const date = new Date(deadlineState);
+    const date = deadlineState ? new Date(deadlineState) : new Date(1);
     dispatch(
       actions.setTemporaryTaskData({
         id: props.id,
@@ -156,8 +159,7 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
       </label>
       <DatePicker
         selected={deadlineState}
-        //@ts-ignore
-        onChange={(date) => setDeadlineState(date)}
+        onChange={(date) => setDeadlineState(date as Date)}
         onCalendarClose={() => Blur("deadline")}
         name="deadline"
         id="deadline"
