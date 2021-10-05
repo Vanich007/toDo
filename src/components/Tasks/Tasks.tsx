@@ -43,7 +43,8 @@ export const Tasks: React.FC = () => {
     //group array by statuses
     return tasks.filter((item) => item.status === type);
   });
-
+  const hesh = tasks.map((item) => `${item.id} ${item.status}`).join("");
+  console.log("hesh", hesh);
   let id = useSelector(getTasksMaxId) as number;
   id++;
   const newTask = () => {
@@ -59,6 +60,20 @@ export const Tasks: React.FC = () => {
       })
     );
   };
+
+  useEffect(() => {
+    console.log(grouppedTasks);
+    for (let i = 0; i <= 3; i++) {
+      for (let t in grouppedTasks[i]) {
+        dispatch(
+          tasksActions.onTaskChange({
+            ...grouppedTasks[i][t],
+            order: parseInt(t),
+          })
+        );
+      }
+    }
+  }, [hesh]);
 
   return (
     <div className="container">

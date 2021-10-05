@@ -1,9 +1,9 @@
 {
   "tasks": [
     {
-      "status": "To Do",
+      "status": "Backlog",
       "id": 1,
-      "order": 1,
+      "order": 0,
       "taskName": "Todo1",
       "deadline": 1635488644486
     },
@@ -43,9 +43,9 @@
       "deadline": 1632494447545
     },
     {
-      "status": "Backlog",
+      "status": "To Do",
       "id": 7,
-      "order": 7,
+      "order": 3,
       "taskName": "Todo7",
       "deadline": 1633498544486
     },
