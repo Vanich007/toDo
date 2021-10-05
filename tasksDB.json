@@ -1,50 +1,58 @@
 {
   "tasks": [
     {
-      "status": "Backlog",
+      "status": "To Do",
       "id": 1,
+      "order": 1,
       "taskName": "Todo1",
       "deadline": 1635488644486
     },
     {
-      "status": "To Do",
+      "status": "Backlog",
       "id": 2,
+      "order": 2,
       "taskName": "Todo2",
       "deadline": 1632494447545
     },
     {
       "status": "In Progress",
       "id": 3,
+      "order": 3,
       "taskName": "Todo3",
       "deadline": 1633498544486
     },
     {
       "status": "Ready",
       "id": 4,
+      "order": 4,
       "taskName": "Todo4",
       "deadline": 1632488544486
     },
     {
       "status": "Backlog",
       "id": 5,
+      "order": 5,
       "taskName": "Todo5",
       "deadline": 1635488644486
     },
     {
-      "status": "To Do",
+      "status": "Backlog",
       "id": 6,
+      "order": 6,
       "taskName": "Todo6",
       "deadline": 1632494447545
     },
     {
-      "status": "In Progress",
+      "status": "Backlog",
       "id": 7,
+      "order": 7,
       "taskName": "Todo7",
       "deadline": 1633498544486
     },
     {
       "status": "Ready",
       "id": 8,
+      "order": 8,
       "taskName": "Todo8",
       "deadline": 1632488544486
     }

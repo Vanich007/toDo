@@ -13,6 +13,7 @@ const clearTask: TaskType = {
   id: 0,
   taskName: "",
   deadline: 0,
+  order: 0,
 };
 
 const defaultstate: defaultstateType = {

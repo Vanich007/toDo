@@ -11,6 +11,7 @@ type EditTaskPropsType = {
   status: StatusType;
   deadline: number;
   id: number;
+  order:number
   show: boolean;
 };
 
@@ -68,6 +69,7 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
     dispatch(
       actions.setTemporaryTaskData({
         id: props.id,
+        order:props.order,
         status: statusState,
         taskName: taskNameState,
         deadline: date.getTime(),

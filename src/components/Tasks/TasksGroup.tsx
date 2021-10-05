@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { TaskItem } from "./TaskItem";
-import { TaskType } from "../../reducers/tasksReducer";
+import { actions, TaskType } from "../../reducers/tasksReducer";
 import "./Tasks.scss";
 import { useDispatch } from "react-redux";
+import { DragItem } from "./Tasks";
 
 type TasksGroupProps = {
   tasks: Array<TaskType>;
@@ -10,11 +11,16 @@ type TasksGroupProps = {
 };
 
 export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
-  let [tasks, setTasks] = useState([...props.tasks]);
+  let [lastHoverAllTasksIndex, setLastHoverAllTasksIndex] = useState(-1); //для обработки drop  - над каким элементом брошен
+  console.log("lastHoverAllTasksIndex", lastHoverAllTasksIndex);
+  let [tasks, setTasks] = useState([
+    ...props.tasks.sort((a, b) => a.order - b.order),
+  ]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTasks([...props.tasks]);
+    setTasks([...props.tasks.sort((a, b) => a.order - b.order)]);
   }, [props.tasks]);
 
   const moveTaskListItem = useCallback(
@@ -30,13 +36,21 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
       const localHoverIndex = tasks.findIndex(
         (i) => i.id === props.allTasks[hoverAllTasksIndex].id
       );
-      console.log("local", localDragIndex, localHoverIndex);
+
+      //console.log("local", localDragIndex, localHoverIndex);
       if (
         localDragIndex > -1 && //если оба элемента из одного столбца
         localHoverIndex > -1 //меняем местами
       ) {
         const dragItem = tasks[dragIndex];
         const hoverItem = tasks[hoverIndex];
+
+        if (lastHoverAllTasksIndex !== hoverAllTasksIndex)
+          setLastHoverAllTasksIndex(hoverAllTasksIndex);
+        console.log(
+          "props.allTasks[hoverAllTasksIndex].id",
+          props.allTasks[hoverAllTasksIndex].id
+        );
         setTasks((tasks) => {
           const updatedTasks = [...tasks];
           updatedTasks[dragIndex] = hoverItem;
@@ -46,6 +60,12 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
       }
     },
     [tasks]
+  );
+  const handleDrop = useCallback(
+    (index: number, item: DragItem) => {
+      dispatch(actions.onChangeOrder(lastHoverAllTasksIndex, item.id));
+    },
+    [lastHoverAllTasksIndex]
   );
 
   let taskItemsByStatuses = tasks.map((item, index) => {
@@ -58,6 +78,8 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
           moveListItem={moveTaskListItem}
           key={item.id}
           task={item}
+          onDrop={(item: DragItem) => handleDrop(index, item)}
+          //{(item)=>handleDrop(index,item)}
         />
       </div>
     );

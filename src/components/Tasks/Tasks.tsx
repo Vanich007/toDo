@@ -9,6 +9,7 @@ import {
   ready,
   TaskType,
   StatusType,
+  patchTask,
 } from "../../reducers/tasksReducer";
 import {
   getModalIsActive,
@@ -24,7 +25,7 @@ import { actions as tasksActions } from "../../reducers/tasksReducer";
 const ItemTypes = [Backlog, toDo, inProgress, ready];
 export interface DragItem {
   index: number;
-  id: string;
+  id: number;
   type: string;
   allTasksId: number;
 }
@@ -52,6 +53,7 @@ export const Tasks: React.FC = () => {
         //form data for Modal editing window
         id,
         status: toDo,
+        order: id,
         taskName: "New Task",
         deadline,
       })
@@ -126,11 +128,17 @@ const DroapableDiv = memo((props: DroapableDivPropsType) => {
         return null;
       //if item with another status, change status
 
+      // dispatch(
+      //   tasksActions.onChangeTaskStatus(
+      //     props.allTasks[droppedAllTasksIndex].id,
+      //     props.status as StatusType
+      //   )
+      // );
       dispatch(
-        tasksActions.onChangeTaskStatus(
-          props.allTasks[droppedAllTasksIndex].id,
-          props.status as StatusType
-        )
+        patchTask({
+          ...props.allTasks[droppedAllTasksIndex],
+          status: props.status as StatusType,
+        })
       );
     },
   });

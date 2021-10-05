@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FC, useEffect } from "react";
 import { actions } from "../../reducers/tasksReducer";
-import { actions as modlaActions } from "../../reducers/modalReducer";
+import { actions as modalActions } from "../../reducers/modalReducer";
 import {
   getActiveTask,
   getTemporaryTask,
@@ -32,16 +32,16 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
 
   const handleSaveClose = () => {
     dispatch(actions.onTaskChange(temporaryTask));
-    dispatch(modlaActions.turnOffModal());
+    dispatch(modalActions.turnOffModal());
     history.push({ pathname: "/" });
   };
   const handleCancelClose = () => {
-    dispatch(modlaActions.turnOffModal());
+    dispatch(modalActions.turnOffModal());
     history.push({ pathname: "/" });
   };
   const deleteTaskItem = () => {
     dispatch(actions.onTaskDelete(activeTask.id));
-    dispatch(modlaActions.turnOffModal());
+    dispatch(modalActions.turnOffModal());
     history.push({ pathname: "/" });
   };
 
@@ -56,6 +56,7 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
             taskName={activeTask.taskName}
             status={activeTask.status}
             deadline={activeTask.deadline}
+            order={activeTask.order}
             id={activeTask.id}
             show={props.show}
           />

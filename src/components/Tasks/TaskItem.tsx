@@ -1,4 +1,4 @@
-import React, { useRef, FC, memo, LegacyRef } from "react";
+import React, { useRef, FC, memo, LegacyRef, useState } from "react";
 import "./Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
 import { actions as modalActions } from "../../reducers/modalReducer";
@@ -15,11 +15,13 @@ type TaskItemPropsType = {
     dragAllTasksIndex: number,
     hoverAllTasksIndex: number
   ) => void;
+  onDrop: (item: DragItem) => void;
   allTasksId: number;
 };
 
 export const TaskItem: FC<TaskItemPropsType> = memo(
-  ({ allTasksId, index, moveListItem, task }) => {
+  ({ allTasksId, index, moveListItem, task, onDrop }) => {
+    let [lastHoverIndex, setLastHoverIndex] = useState(allTasksId);
     const [{ isDragging }, dragRef] = useDrag({
       type: "item",
       item: { index, allTasksId },
@@ -60,6 +62,7 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
         );
         item.index = hoverIndex;
       },
+      drop: onDrop,
     });
 
     const ref = useRef<HTMLInputElement>(null);

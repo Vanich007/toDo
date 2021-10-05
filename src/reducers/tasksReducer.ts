@@ -18,6 +18,7 @@ export type TaskType = {
   id: number;
   taskName: string;
   deadline: number;
+  order: number;
 };
 
 const defaultstate = {
@@ -29,9 +30,9 @@ type defaultStateType = typeof defaultstate;
 export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
   let newState = { ...state } as defaultStateType;
   switch (action.type) {
-    case "GOTTASKS":
+    case "GOT_TASKS":
       if (action.tasks) {
-        newState.tasks = [...action.tasks];
+        newState.tasks = [...action.tasks.sort((a, b) => a.order - b.order)];
         for (let i of action.tasks)
           if (newState.maxId < i.id) newState.maxId = i.id;
       } else {
@@ -40,7 +41,7 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
       }
 
       return newState;
-    case "CHANGETASK":
+    case "CHANGE_TASK":
       const index = newState.tasks.findIndex(
         (item) => item.id === action.task.id
       );
@@ -51,13 +52,14 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
       } else newState.tasks = [...state.tasks, action.task];
 
       return newState;
-    case "DELETETASK":
+    case "DELETE_TASK":
       newState.tasks = [...state.tasks.filter((item) => item.id !== action.id)];
       return newState;
-    case "CHANGETASKSTATUS":
-      state.tasks[state.tasks.findIndex((i) => i.id === action.id)].status =
-        action.status;
-      newState.tasks = [...state.tasks];
+    case "CHANGE_ORDER":
+      // const tempOrder1 = newState.tasks[action.id1].order;
+      // newState.tasks[action.id1].order = newState.tasks[action.id2].order;
+      newState.tasks[action.id2].order = newState.tasks[action.id1].order - 1;
+
       return newState;
     default:
       return state;
@@ -67,16 +69,16 @@ type ActionTypes = InferActionTypes<typeof actions>;
 
 export let actions = {
   onGotTasks: (tasks: Array<TaskType>) => {
-    return { tasks, type: "GOTTASKS" } as const;
+    return { tasks, type: "GOT_TASKS" } as const;
   },
   onTaskChange: (task: TaskType) => {
-    return { task, type: "CHANGETASK" } as const;
+    return { task, type: "CHANGE_TASK" } as const;
   },
   onTaskDelete: (id: number) => {
-    return { id, type: "DELETETASK" } as const;
+    return { id, type: "DELETE_TASK" } as const;
   },
-  onChangeTaskStatus: (id: number, status: StatusType) => {
-    return { id, status, type: "CHANGETASKSTATUS" } as const;
+  onChangeOrder: (id1: number, id2: number) => {
+    return { id1, id2, type: "CHANGE_ORDER" } as const;
   },
 };
 
@@ -94,6 +96,26 @@ export const getTasksFetch = () => {
           console.error(data.message);
         } else {
           dispatch(actions.onGotTasks(data));
+        }
+      });
+  };
+};
+
+export const patchTask = (task: TaskType) => {
+  return (dispatch: DispatchType) => {
+    return fetch(`http://localhost:5000/tasks/${task.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          dispatch(actions.onTaskChange(data));
         }
       });
   };
