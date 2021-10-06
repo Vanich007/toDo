@@ -66,7 +66,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
     // useCallback(
     async (index: number, item: DragItem) => {
       console.log("drop");
-
+      dispatch(tasksActions.setIsFetching(true));
       await Promise.all(
         tasks.map(async function (item, i) {
           //соберем данные по юзерам
@@ -79,6 +79,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
         })
       );
       dispatch(tasksActions.sortTasksByOrder());
+      dispatch(tasksActions.setIsFetching(false));
       // for (let i in tasks) {
       //   await dispatch(
       //     patchTask({

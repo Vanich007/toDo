@@ -4,6 +4,7 @@ $itembackgroundcolor: #6a6dcd;
 $white: #fff;
 $orange: orange;
 $red: red;
+$grey: #f3f3f3;
 @mixin flexible() {
   display: flex;
   justify-content: space-between;
@@ -69,7 +70,7 @@ $red: red;
   padding: 5px;
   margin: 3px auto;
 }
-.task_item {
+.task-item {
   @include border-radius(8px);
   background-color: $itembackgroundcolor;
   padding: 10px;
@@ -80,14 +81,14 @@ $red: red;
   width: 100%;
 }
 
-.deadlinesoon {
+.deadline-soon {
   background-color: $orange;
 }
-.deadlineoff {
+.deadline-off {
   background-color: $red;
 }
 
-.taskname {
+.task-name {
   background-color: transparent;
   font-size: 16;
   font-style: normal;
@@ -101,25 +102,25 @@ $red: red;
   padding: 10px 0 10 px 0;
 }
 
-.backlogTasks:before {
+.backlog-tasks:before {
   content: "Backlog";
   @include column-header();
 }
-.todoTasks {
+.todo-tasks {
   &:before {
     content: "To do";
     @include column-header();
   }
 }
-.inProgressTasks:before {
+.in-progress-tasks:before {
   content: "In progress";
   @include column-header();
 }
-.readyTasks:before {
+.ready-tasks:before {
   content: "Designed";
   @include column-header();
 }
-.add_task_button {
+.add-task-button {
   background: $itembackgroundcolor no-repeat
     url("https://craftt.ru/images/post_add.png");
   background-position: center;

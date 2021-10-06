@@ -101,11 +101,11 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
         ref={dragDropRef}
         style={{ opacity }}
         onClick={setModalTask}
-        className={`task_item ${deadlinesoon ? "deadlinesoon" : ""} ${
-          deadlineoff ? "deadlineoff" : ""
+        className={`task-item ${deadlinesoon ? "deadline-soon" : ""} ${
+          deadlineoff ? "deadline-off" : ""
         }`}
       >
-        <div className="taskname">{task.taskName}</div>
+        <div className="task-name">{task.taskName}</div>
         {deadlineDateFormatted}
       </div>
     );

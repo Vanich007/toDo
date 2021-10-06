@@ -23,6 +23,7 @@ export type TaskType = {
 const defaultstate = {
   tasks: [] as Array<TaskType>,
   maxId: 0 as Number,
+  isFetching: false,
 };
 type defaultStateType = typeof defaultstate;
 
@@ -64,6 +65,9 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
     case "TR_CREATE_TASK":
       newState.tasks = [...newState.tasks, action.task];
       return newState;
+    case "TR_SET_IS_FETCHING":
+      newState.isFetching = action.isFetching;
+      return newState;
     default:
       return state;
   }
@@ -85,6 +89,9 @@ export let actions = {
   },
   sortTasksByOrder: () => {
     return { type: "TR_SORT_TASKS" } as const;
+  },
+  setIsFetching: (isFetching: boolean) => {
+    return { isFetching, type: "TR_SET_IS_FETCHING" } as const;
   },
 };
 

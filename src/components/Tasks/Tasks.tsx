@@ -13,6 +13,7 @@ import {
 } from "../../reducers/tasksReducer";
 import {
   getHash,
+  getIsFetching,
   getModalIsActive,
   getTasks,
   getTasksMaxId,
@@ -22,6 +23,7 @@ import { actions } from "../../reducers/modalReducer";
 import { TasksGroup } from "./TasksGroup";
 import { useDrop } from "react-dnd";
 import { actions as tasksActions } from "../../reducers/tasksReducer";
+import { Loader } from "../Loader/Loader";
 
 const ItemTypes = [Backlog, toDo, inProgress, ready];
 export interface DragItem {
@@ -32,6 +34,7 @@ export interface DragItem {
 }
 
 export const Tasks: React.FC = () => {
+  const isFetching = useSelector(getIsFetching);
   const tasks = useSelector(getTasks);
   let hash = useSelector(getHash);
 
@@ -91,12 +94,13 @@ export const Tasks: React.FC = () => {
     }
   }, []);
 
-  console.log(grouppedTasks);
   return (
-    <div className="container">
+    <>
+      {" "}
+      {isFetching ? <Loader /> : ""}
       <div className="double-row">
         <DroapableDiv
-          className="backlogTasks group"
+          className="backlog-tasks group"
           status={ItemTypes[0]}
           tasks={grouppedTasks[0]}
           allTasks={tasks}
@@ -104,7 +108,7 @@ export const Tasks: React.FC = () => {
           <TasksGroup tasks={grouppedTasks[0]} allTasks={tasks} />
         </DroapableDiv>
         <DroapableDiv
-          className="todoTasks group"
+          className="todo-tasks group"
           status={ItemTypes[1]}
           tasks={grouppedTasks[1]}
           allTasks={tasks}
@@ -114,7 +118,7 @@ export const Tasks: React.FC = () => {
       </div>
       <div className="double-row">
         <DroapableDiv
-          className="inProgressTasks group"
+          className="in-progress-tasks group"
           status={ItemTypes[2]}
           tasks={grouppedTasks[2]}
           allTasks={tasks}
@@ -123,7 +127,7 @@ export const Tasks: React.FC = () => {
         </DroapableDiv>
 
         <DroapableDiv
-          className="readyTasks group"
+          className="ready-tasks group"
           status={ItemTypes[3]}
           tasks={grouppedTasks[3]}
           allTasks={tasks}
@@ -131,14 +135,13 @@ export const Tasks: React.FC = () => {
           <TasksGroup tasks={grouppedTasks[3]} allTasks={tasks} />
         </DroapableDiv>
       </div>
-
       {modalIsActive ? <ShowTaskInModal show={modalIsActive} /> : null}
       <button
         title="Add task"
-        className="add_task_button"
+        className="add-task-button"
         onClick={newTask}
       ></button>
-    </div>
+    </>
   );
 };
 

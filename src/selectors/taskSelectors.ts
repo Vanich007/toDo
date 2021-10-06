@@ -1,5 +1,7 @@
 import { AppStateType } from "../reduxStore";
 export const getTasks = (state: AppStateType) => state.tasksPage.tasks;
+export const getIsFetching = (state: AppStateType) =>
+  state.tasksPage.isFetching;
 export const getTasksMaxId = (state: AppStateType) => state.tasksPage.maxId;
 //export const getIsNewTask = (state: AppStateType) => state.modalPage.isNewTask;
 export const getModalIsActive = (state: AppStateType) =>
