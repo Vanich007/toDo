@@ -8,5 +8,10 @@ export const getActiveTask = (state: AppStateType) =>
   state.modalPage.activeTask;
 export const getTemporaryTask = (state: AppStateType) =>
   state.modalPage.temporaryTask;
-export const getHesh = (state: AppStateType) =>
-  state.tasksPage.tasks.map((item) => `${item.id} ${item.status}`).join("");
+export const getHash = (state: AppStateType) =>
+  state.tasksPage.tasks
+    .map(
+      (item) =>
+        `${item.id} ${item.status}${item.order}${item.taskName}${item.description}${item.deadline}`
+    )
+    .join("");

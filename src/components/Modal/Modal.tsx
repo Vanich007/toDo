@@ -1,7 +1,12 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FC, useEffect } from "react";
-import { actions } from "../../reducers/tasksReducer";
+import {
+  actions,
+  createTask,
+  deleteTask,
+  patchTask,
+} from "../../reducers/tasksReducer";
 import { actions as modalActions } from "../../reducers/modalReducer";
 import {
   getActiveTask,
@@ -11,6 +16,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { EditTask } from "../Tasks/EditTask";
 import { useHistory } from "react-router-dom";
+import { getIsNewTask } from "../../selectors/modalSelectors";
 type ShowTaskInModalPropsType = {
   show: boolean;
 };
@@ -30,8 +36,14 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
 
   const dispatch = useDispatch();
 
+  const isNewTask = useSelector(getIsNewTask);
+
   const handleSaveClose = () => {
-    dispatch(actions.onTaskChange(temporaryTask));
+    if (isNewTask) {
+      dispatch(modalActions.setIsNewTask(false));
+      dispatch(createTask(temporaryTask));
+    } else dispatch(patchTask(temporaryTask));
+
     dispatch(modalActions.turnOffModal());
     history.push({ pathname: "/" });
   };
@@ -39,8 +51,9 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
     dispatch(modalActions.turnOffModal());
     history.push({ pathname: "/" });
   };
+
   const deleteTaskItem = () => {
-    dispatch(actions.onTaskDelete(activeTask.id));
+    dispatch(deleteTask(activeTask.id));
     dispatch(modalActions.turnOffModal());
     history.push({ pathname: "/" });
   };
@@ -59,6 +72,7 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
             order={activeTask.order}
             id={activeTask.id}
             show={props.show}
+            description={activeTask.description}
           />
         </Modal.Body>
         <Modal.Footer>

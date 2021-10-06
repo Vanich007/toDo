@@ -1,11 +1,18 @@
-import React, { useRef, FC, memo, LegacyRef, useState } from "react";
+import React, {
+  useRef,
+  FC,
+  memo,
+  LegacyRef,
+  useState,
+  useCallback,
+} from "react";
 import "./Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
-import { actions as modalActions } from "../../reducers/modalReducer";
+
 import { useDispatch } from "react-redux";
 import { DropTargetMonitor, useDrag, useDrop, XYCoord } from "react-dnd";
 import { DragItem } from "./Tasks";
-
+const THREEDAYPERIOD = 259200000;
 type TaskItemPropsType = {
   task: TaskType;
   index: number;
@@ -17,10 +24,11 @@ type TaskItemPropsType = {
   ) => void;
   onDrop: (item: DragItem) => void;
   allTasksId: number;
+  setModalTask: () => void;
 };
 
 export const TaskItem: FC<TaskItemPropsType> = memo(
-  ({ allTasksId, index, moveListItem, task, onDrop }) => {
+  ({ allTasksId, index, moveListItem, task, onDrop, setModalTask }) => {
     let [lastHoverIndex, setLastHoverIndex] = useState(allTasksId);
     const [{ isDragging }, dragRef] = useDrag({
       type: "item",
@@ -72,8 +80,6 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
 
     const opacity = isDragging ? 0 : 1;
 
-    const dispatch = useDispatch();
-
     // let [showModal, setShowModal] = useState(false);
 
     const deadlineDate = new Date(task.deadline);
@@ -82,19 +88,15 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
     }.${deadlineDate.getFullYear()}`;
 
     const deadlinesoon =
-      +deadlineDate - Date.now() > 259200000 || task.status === "Ready"
+      +deadlineDate - Date.now() > THREEDAYPERIOD || task.status === "Ready"
         ? false
         : true;
     const deadlineoff =
       Date.now() > +deadlineDate && task.status !== "Ready" ? true : false;
-    const setModalTask = () => {
-      dispatch(modalActions.setModalTask(task));
-    };
-    // Join the 2 refs together into one (both draggable and can be dropped on)
-    // type inputRefType = React.RefObject<HTMLDivElement>;
 
     return (
       <div
+        key={task.id}
         //@ts-ignore
         ref={dragDropRef}
         style={{ opacity }}

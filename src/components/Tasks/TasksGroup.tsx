@@ -1,10 +1,15 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { TaskItem } from "./TaskItem";
-import { actions as tasksActions, TaskType } from "../../reducers/tasksReducer";
+import {
+  actions as tasksActions,
+  patchTask,
+  TaskType,
+} from "../../reducers/tasksReducer";
 import "./Tasks.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { DragItem } from "./Tasks";
-import { getHesh } from "../../selectors/taskSelectors";
+import { getHash } from "../../selectors/taskSelectors";
+import { actions as modalActions } from "../../reducers/modalReducer";
 
 type TasksGroupProps = {
   tasks: Array<TaskType>;
@@ -17,11 +22,11 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
   let [tasks, setTasks] = useState(props.tasks); //.sort((a, b) => a.order - b.order
 
   const dispatch = useDispatch();
-  const tasksHesh = useSelector(getHesh);
+  const tasksHash = useSelector(getHash);
 
   useEffect(() => {
     setTasks(props.tasks);
-  }, [tasksHesh]);
+  }, [tasksHash]);
 
   const moveTaskListItem = useCallback(
     (
@@ -37,7 +42,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
         (i) => i.id === props.allTasks[hoverAllTasksIndex].id
       );
 
-      //console.log("local", localDragIndex, localHoverIndex);
+      console.log("local", tasks, localDragIndex, localHoverIndex);
       if (
         localDragIndex > -1 && //если оба элемента из одного столбца
         localHoverIndex > -1 //меняем местами
@@ -55,27 +60,33 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
         });
       }
     },
-    [tasksHesh]
+    [tasks]
   );
-  const handleDrop = useCallback(
+  const handleDrop =
+    // useCallback(
     (index: number, item: DragItem) => {
+      console.log("drop");
       for (let i in tasks) {
         dispatch(
-          tasksActions.onTaskChange({
+          patchTask({
             ...tasks[i],
             order: parseInt(i),
           })
         );
       }
-    },
-    [tasksHesh]
-  );
+    };
+  // ,
+  //   [tasksHesh]
+  // );
 
   let taskItemsByStatuses = tasks.map((item, index) => {
     const allTasksIndex = props.allTasks.findIndex((i) => i.id === item.id);
     return (
       <div className="item-wrapper" key={item.id}>
         <TaskItem
+          setModalTask={() => {
+            dispatch(modalActions.setModalTask(item));
+          }}
           index={index}
           allTasksId={allTasksIndex}
           moveListItem={moveTaskListItem}

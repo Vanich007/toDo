@@ -1,7 +1,7 @@
 import { TaskType } from "./tasksReducer";
 import { InferActionTypes } from "../reduxStore";
 
-type defaultstateType = {
+type defaultStateType = {
   activeTask: TaskType;
   temporaryTask: TaskType;
   modalIsActive: boolean;
@@ -12,35 +12,37 @@ const clearTask: TaskType = {
   status: "To Do",
   id: 0,
   taskName: "",
+
   deadline: 0,
   order: 0,
 };
 
-const defaultstate: defaultstateType = {
+const defaultState: defaultStateType = {
   activeTask: clearTask,
   temporaryTask: clearTask,
   modalIsActive: false,
   isNewTask: false,
 };
 
-export const modalReducer = (state = defaultstate, action: ActionTypes) => {
+export const modalReducer = (state = defaultState, action: ActionTypes) => {
   let newState = { ...state };
   switch (action.type) {
-    case "SETMODALTASK":
+    case "MR_SET_MODAL_TASK":
       if (action.task) {
-        newState.activeTask = action.task;
+        newState.activeTask = { ...action.task };
         newState.modalIsActive = true;
       }
       return newState;
-    case "TURNOFFMODAL":
+    case "MR_TURN_OFF_MODAL":
       newState.modalIsActive = false;
 
       return newState;
-    case "SETTEMPORARYTASK":
-      newState.temporaryTask = action.task;
-
+    case "MR_SET_TEMPORARY_TASK":
+      newState.temporaryTask = { ...action.task };
       return newState;
-
+    case "MR_SET_IS_NEW_TASK":
+      newState.isNewTask = action.isNew;
+      return newState;
     default:
       return state;
   }
@@ -49,12 +51,15 @@ export type ActionTypes = InferActionTypes<typeof actions>;
 
 export let actions = {
   setModalTask: (task: TaskType) => {
-    return { task, type: "SETMODALTASK" } as const;
+    return { task, type: "MR_SET_MODAL_TASK" } as const;
   },
   turnOffModal: () => {
-    return { type: "TURNOFFMODAL" } as const;
+    return { type: "MR_TURN_OFF_MODAL" } as const;
   },
   setTemporaryTaskData: (task: TaskType) => {
-    return { task, type: "SETTEMPORARYTASK" } as const;
+    return { task, type: "MR_SET_TEMPORARY_TASK" } as const;
+  },
+  setIsNewTask: (isNew: boolean) => {
+    return { isNew, type: "MR_SET_IS_NEW_TASK" } as const;
   },
 };

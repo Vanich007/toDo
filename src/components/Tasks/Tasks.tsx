@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from "react";
+import React, { useEffect, memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./Tasks.scss";
 import {
@@ -12,6 +12,7 @@ import {
   patchTask,
 } from "../../reducers/tasksReducer";
 import {
+  getHash,
   getModalIsActive,
   getTasks,
   getTasksMaxId,
@@ -32,21 +33,34 @@ export interface DragItem {
 
 export const Tasks: React.FC = () => {
   const tasks = useSelector(getTasks);
+  let hash = useSelector(getHash);
+
+  let grouppedTasks = ItemTypes.map((type) => {
+    return tasks.filter((item) => item.status === type);
+  });
+
+  console.log("tasks", tasks, hash);
+  console.log("grouppedTasks", grouppedTasks);
+
   const modalIsActive = useSelector(getModalIsActive);
   const dispatch = useDispatch();
+  useEffect(() => {
+    hash = tasks.map((item) => `${item.id} ${item.status}`).join("");
+  }, [tasks]);
 
   useEffect(() => {
     dispatch(getTasksFetch()); //get Tasks from json-server
   }, []);
 
-  const grouppedTasks = ItemTypes.map((type) => {
-    //group array by statuses
-    return tasks.filter((item) => item.status === type);
-  });
-  const hesh = tasks.map((item) => `${item.id} ${item.status}`).join("");
-  console.log("hesh", hesh);
+  useEffect(() => {
+    grouppedTasks = ItemTypes.map((type) => {
+      return tasks.filter((item) => item.status === type);
+    });
+  }, [hash]);
+
   let id = useSelector(getTasksMaxId) as number;
   id++;
+
   const newTask = () => {
     const deadline = Date.now();
     dispatch(
@@ -55,10 +69,12 @@ export const Tasks: React.FC = () => {
         id,
         status: toDo,
         order: id,
+        description: "",
         taskName: "New Task",
         deadline,
       })
     );
+    dispatch(actions.setIsNewTask(true));
   };
 
   useEffect(() => {
@@ -73,8 +89,9 @@ export const Tasks: React.FC = () => {
         );
       }
     }
-  }, [hesh]);
+  }, []);
 
+  console.log(grouppedTasks);
   return (
     <div className="container">
       <div className="double-row">

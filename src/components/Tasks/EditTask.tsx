@@ -2,7 +2,6 @@ import { FC, useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch } from "react-redux";
-import { isNull } from "util";
 import { actions } from "../../reducers/modalReducer";
 import { StatusType } from "../../reducers/tasksReducer";
 
@@ -11,14 +10,18 @@ type EditTaskPropsType = {
   status: StatusType;
   deadline: number;
   id: number;
-  order:number
+  order: number;
   show: boolean;
+  description?: string;
 };
 
 export const EditTask: FC<EditTaskPropsType> = (props) => {
   const dispatch = useDispatch();
   const statuses = ["Backlog", "To Do", "In Progress", "Ready"];
   let [statusState, setStatusState] = useState(props.status);
+  let [descriptionState, setDescriptionState] = useState(
+    props.description ? props.description : ""
+  );
   let [taskNameState, setTaskNameState] = useState(props.taskName);
   let [deadlineState, setDeadlineState] = useState<null | Date>(
     new Date(props.deadline)
@@ -26,6 +29,7 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
 
   let [statusIsEditing, setStatusIsEditing] = useState(false);
   let [taskNameIsEditing, setTaskNameIsEditing] = useState(false);
+  let [descriptionIsEditing, setDescriptionIsEditing] = useState(false);
 
   useEffect(() => {
     if (taskNameIsEditing) {
@@ -37,6 +41,11 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
       (document.getElementById("status") as HTMLFormElement).focus();
     }
   }, [statusIsEditing]);
+  useEffect(() => {
+    if (descriptionIsEditing) {
+      (document.getElementById("description") as HTMLFormElement).focus();
+    }
+  }, [descriptionIsEditing]);
 
   const handleChange = (
     event:
@@ -53,6 +62,9 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
       case "deadline":
         setDeadlineState(new Date(event.target.value));
         break;
+      case "description":
+        setDescriptionState(event.target.value);
+        break;
     }
   };
 
@@ -64,14 +76,18 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
       case "taskName":
         setTaskNameIsEditing(false);
         break;
+      case "description":
+        setDescriptionIsEditing(false);
+        break;
     }
     const date = deadlineState ? new Date(deadlineState) : new Date(1);
     dispatch(
       actions.setTemporaryTaskData({
         id: props.id,
-        order:props.order,
+        order: props.order,
         status: statusState,
         taskName: taskNameState,
+        description: descriptionState,
         deadline: date.getTime(),
       })
     );
@@ -156,6 +172,36 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
           />
         </div>
       )}
+
+      {descriptionIsEditing ? (
+        <div className="row">
+          <label htmlFor="description" className="col-sm-2 col-form-label">
+            Описание задачи
+          </label>
+          <input
+            name="description"
+            id="description"
+            placeholder="Описание задачи"
+            value={descriptionState}
+            onChange={handleChange}
+            onBlur={() => Blur("description")}
+          />
+        </div>
+      ) : (
+        <div onClick={() => setDescriptionIsEditing(true)}>
+          <label htmlFor="description" className="col-sm-2 col-form-label">
+            Описание задачи
+          </label>
+          <input
+            id="description"
+            className="form-control"
+            type="text"
+            placeholder={descriptionState}
+            readOnly
+          />
+        </div>
+      )}
+
       <label htmlFor="deadline" className="col-sm-2 col-form-label">
         Срок исполнения
       </label>

@@ -1,7 +1,5 @@
 import { Dispatch } from "redux";
 import { InferActionTypes } from "../reduxStore";
-
-//import { Dispatch } from "redux";
 export type DispatchType = Dispatch<ActionTypes>;
 
 export const Backlog = "Backlog",
@@ -17,6 +15,7 @@ export type TaskType = {
   status: StatusType;
   id: number;
   taskName: string;
+  description?: string;
   deadline: number;
   order: number;
 };
@@ -30,7 +29,7 @@ type defaultStateType = typeof defaultstate;
 export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
   let newState = { ...state } as defaultStateType;
   switch (action.type) {
-    case "GOT_TASKS":
+    case "TR_GOT_TASKS":
       if (action.tasks) {
         newState.tasks = [...action.tasks.sort((a, b) => a.order - b.order)];
         for (let i of action.tasks)
@@ -41,7 +40,7 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
       }
 
       return newState;
-    case "CHANGE_TASK":
+    case "TR_CHANGE_TASK":
       const index = newState.tasks.findIndex(
         (item) => item.id === action.task.id
       );
@@ -49,17 +48,17 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
         const before = newState.tasks.slice(0, index);
         const after = newState.tasks.slice(index + 1);
         newState.tasks = [...before, action.task, ...after];
-      } else newState.tasks = [...state.tasks, action.task];
+      } else {
+        newState.tasks = [...state.tasks, action.task];
+      }
 
       return newState;
-    case "DELETE_TASK":
+    case "TR_DELETE_TASK":
       newState.tasks = [...state.tasks.filter((item) => item.id !== action.id)];
       return newState;
-    case "CHANGE_ORDER":
-      // const tempOrder1 = newState.tasks[action.id1].order;
-      // newState.tasks[action.id1].order = newState.tasks[action.id2].order;
-      newState.tasks[action.id2].order = newState.tasks[action.id1].order - 1;
 
+    case "TR_CREATE_TASK":
+      newState.tasks = [...newState.tasks, action.task];
       return newState;
     default:
       return state;
@@ -69,16 +68,16 @@ type ActionTypes = InferActionTypes<typeof actions>;
 
 export let actions = {
   onGotTasks: (tasks: Array<TaskType>) => {
-    return { tasks, type: "GOT_TASKS" } as const;
+    return { tasks, type: "TR_GOT_TASKS" } as const;
   },
   onTaskChange: (task: TaskType) => {
-    return { task, type: "CHANGE_TASK" } as const;
+    return { task, type: "TR_CHANGE_TASK" } as const;
+  },
+  onTaskCreate: (task: TaskType) => {
+    return { task, type: "TR_CREATE_TASK" } as const;
   },
   onTaskDelete: (id: number) => {
-    return { id, type: "DELETE_TASK" } as const;
-  },
-  onChangeOrder: (id1: number, id2: number) => {
-    return { id1, id2, type: "CHANGE_ORDER" } as const;
+    return { id, type: "TR_DELETE_TASK" } as const;
   },
 };
 
@@ -116,6 +115,45 @@ export const patchTask = (task: TaskType) => {
           console.error(data.message);
         } else {
           dispatch(actions.onTaskChange(data));
+        }
+      });
+  };
+};
+
+export const deleteTask = (id: number) => {
+  return (dispatch: DispatchType) => {
+    return fetch(`http://localhost:5000/tasks/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          dispatch(actions.onTaskDelete(id));
+        }
+      });
+  };
+};
+
+export const createTask = (task: TaskType) => {
+  return (dispatch: DispatchType) => {
+    return fetch(`http://localhost:5000/tasks/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          dispatch(actions.onTaskCreate(data));
         }
       });
   };
