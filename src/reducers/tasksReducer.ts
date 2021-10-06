@@ -29,6 +29,10 @@ type defaultStateType = typeof defaultstate;
 export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
   let newState = { ...state } as defaultStateType;
   switch (action.type) {
+    case "TR_SORT_TASKS":
+      newState.tasks = newState.tasks.sort((a, b) => a.order - b.order);
+      return newState;
+
     case "TR_GOT_TASKS":
       if (action.tasks) {
         newState.tasks = [...action.tasks.sort((a, b) => a.order - b.order)];
@@ -78,6 +82,9 @@ export let actions = {
   },
   onTaskDelete: (id: number) => {
     return { id, type: "TR_DELETE_TASK" } as const;
+  },
+  sortTasksByOrder: () => {
+    return { type: "TR_SORT_TASKS" } as const;
   },
 };
 

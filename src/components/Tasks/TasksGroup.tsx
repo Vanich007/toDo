@@ -19,7 +19,7 @@ type TasksGroupProps = {
 export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
   // let [lastHoverAllTasksIndex, setLastHoverAllTasksIndex] = useState(-1); //для обработки drop  - над каким элементом брошен
 
-  let [tasks, setTasks] = useState(props.tasks); //.sort((a, b) => a.order - b.order
+  let [tasks, setTasks] = useState(props.tasks); //
 
   const dispatch = useDispatch();
   const tasksHash = useSelector(getHash);
@@ -64,16 +64,29 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
   );
   const handleDrop =
     // useCallback(
-    (index: number, item: DragItem) => {
+    async (index: number, item: DragItem) => {
       console.log("drop");
-      for (let i in tasks) {
-        dispatch(
-          patchTask({
-            ...tasks[i],
-            order: parseInt(i),
-          })
-        );
-      }
+
+      await Promise.all(
+        tasks.map(async function (item, i) {
+          //соберем данные по юзерам
+          return dispatch(
+            patchTask({
+              ...item,
+              order: i,
+            })
+          );
+        })
+      );
+      dispatch(tasksActions.sortTasksByOrder());
+      // for (let i in tasks) {
+      //   await dispatch(
+      //     patchTask({
+      //       ...tasks[i],
+      //       order: parseInt(i),
+      //     })
+      //   );
+      // }
     };
   // ,
   //   [tasksHesh]
