@@ -1,0 +1,225 @@
+@font-face {
+  font-family: "SF Pro Display Bold";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SF Pro Display Bold"), url("SFPRODISPLAYBOLD.woff") format("woff");
+}
+@font-face {
+  font-family: "SF Pro Display Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SF Pro Display Regular"),
+    url("SFPRODISPLAYREGULAR.woff") format("woff");
+}
+
+$containerbackgroundcolor: #000;
+$groupbackgroundcolor: #262626;
+$itembackgroundcolor: #6a6dcd;
+$white: #fff;
+$soon: #6a6dcd;
+$red: #d93535;
+$grey: #f3f3f3;
+$ready: #00a88b;
+@mixin flexible() {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@mixin border-radius($radius) {
+  // Префиксы для:
+  -webkit-border-radius: $radius; // Chrome и Safari
+  -moz-border-radius: $radius; // Firefox
+  -ms-border-radius: $radius; // Internet Explorer
+  -o-border-radius: $radius; // Opera
+  border-radius: $radius; // Стандартный CSS
+}
+@mixin column-header() {
+  color: $white;
+  // padding: 24px 0 0 24px;
+  font-family: "SF Pro Display Bold";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 37px;
+  line-height: 44px;
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  margin: 16px 0px;
+}
+
+.container {
+  @include flexible();
+  background: $containerbackgroundcolor;
+  flex-direction: row;
+  align-items: flex-start;
+  font-family: "SF Pro Display Regular";
+  width: 100%;
+  max-width: 1600px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+.double-row {
+  @include flexible();
+  justify-content: space-around;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  @media (max-width: 575px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.group {
+  @include border-radius(16px);
+  background: $groupbackgroundcolor;
+  background-position: left;
+  display: flex;
+  flex-direction: column;
+
+  margin: 10px;
+  width: 40%;
+  align-items: center;
+  padding: 24px;
+  @media (max-width: 575px) {
+    width: 80%;
+  }
+}
+.item-wrapper {
+  width: 80%;
+  padding: 5px;
+  margin: 3px auto;
+}
+.task-item {
+  @include border-radius(8px);
+  background-color: $itembackgroundcolor;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12), 0px 16px 32px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.deadline-soon {
+  background-color: $soon;
+}
+.deadline-off {
+  background-color: $red;
+}
+.ready {
+  background-color: $ready;
+}
+.task-title {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  /* identical to box height, or 24px */
+
+  color: $white;
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  margin: 8px 0px;
+}
+.task-description {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 140%;
+  color: rgba(255, 255, 255, 0.75);
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+  margin: 8px 0px;
+}
+
+.backlog-tasks:before {
+  content: "Backlog";
+  @include column-header();
+}
+.todo-tasks {
+  &:before {
+    content: "To do";
+    @include column-header();
+  }
+}
+.in-progress-tasks:before {
+  content: "In progress";
+  @include column-header();
+}
+.ready-tasks:before {
+  content: "Designed";
+  @include column-header();
+}
+.add-task-button {
+  background: $itembackgroundcolor no-repeat
+    url("https://craftt.ru/images/post_add.png");
+  background-position: center;
+  padding: 0 20px;
+  width: 70px;
+  height: 70px;
+  color: #fff;
+  margin-left: 15px;
+  float: left;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 30px;
+  right: 50px;
+  opacity: 0.7;
+  z-index: 5;
+}
+
+.loader {
+  position: relative;
+  margin: auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, transparent, transparent 40%, #e5f403);
+  animation: animate 2s linear infinite;
+}
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    filter: hue-rotate(360deg);
+  }
+}
+.loader:before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  background: $groupbackgroundcolor;
+  border-radius: 50%;
+  z-index: 1000;
+}
+.loader:after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background: linear-gradient(45deg, transparent, transparent 40%, #e5f403);
+  border-radius: 50%;
+  z-index: 1000;
+  z-index: 1;
+  filter: blur(30px);
+}

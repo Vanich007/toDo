@@ -6,7 +6,7 @@ import React, {
   useState,
   useCallback,
 } from "react";
-import "./Tasks.scss";
+import "./style/Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
 
 import { useDispatch } from "react-redux";
@@ -103,10 +103,11 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
         onClick={setModalTask}
         className={`task-item ${deadlinesoon ? "deadline-soon" : ""} ${
           deadlineoff ? "deadline-off" : ""
-        }`}
+        } ${task.status === "Ready" ? "ready" : ""}`}
       >
-        <div className="task-name">{task.taskName}</div>
-        {deadlineDateFormatted}
+        <div className="task-title">{task.taskName}</div>
+        <div className="task-description">{task.description}</div>
+        {/* {deadlineDateFormatted} */}
       </div>
     );
   }

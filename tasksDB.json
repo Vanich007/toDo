@@ -3,23 +3,23 @@
     {
       "status": "To Do",
       "id": 1,
-      "order": 3,
+      "order": 2,
       "taskName": "Todo1",
       "deadline": 1635488644486,
       "description": "22222222"
     },
     {
-      "status": "To Do",
+      "status": "Backlog",
       "id": 2,
-      "order": 0,
+      "order": 4,
       "taskName": "Todo22",
       "deadline": 1632494447545,
       "description": "22"
     },
     {
-      "status": "To Do",
+      "status": "Ready",
       "id": 6,
-      "order": 2,
+      "order": 0,
       "taskName": "Todo66",
       "deadline": 1632494447545,
       "description": "3"
@@ -33,12 +33,20 @@
       "description": "121212"
     },
     {
-      "status": "To Do",
+      "status": "In Progress",
       "id": 8,
-      "order": 4,
+      "order": 0,
       "taskName": "Todo88",
       "deadline": 1632488544486,
       "description": ""
+    },
+    {
+      "id": 9,
+      "order": 2,
+      "status": "Backlog",
+      "taskName": "New Task1113",
+      "description": "",
+      "deadline": 1633760893000
     }
   ]
 }

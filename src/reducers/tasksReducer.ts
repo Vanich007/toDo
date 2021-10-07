@@ -23,7 +23,7 @@ export type TaskType = {
 const defaultstate = {
   tasks: [] as Array<TaskType>,
   maxId: 0 as Number,
-  isFetching: false,
+  isFetching: null as StatusType | null,
 };
 type defaultStateType = typeof defaultstate;
 
@@ -90,7 +90,7 @@ export let actions = {
   sortTasksByOrder: () => {
     return { type: "TR_SORT_TASKS" } as const;
   },
-  setIsFetching: (isFetching: boolean) => {
+  setIsFetching: (isFetching: StatusType | null) => {
     return { isFetching, type: "TR_SET_IS_FETCHING" } as const;
   },
 };

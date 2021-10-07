@@ -1,6 +1,6 @@
 import React, { useEffect, memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "./Tasks.scss";
+import "./style/Tasks.scss";
 import {
   getTasksFetch,
   Backlog,
@@ -95,9 +95,7 @@ export const Tasks: React.FC = () => {
   }, []);
 
   return (
-    <>
-      {" "}
-      {isFetching ? <Loader /> : ""}
+    <div className="container">
       <div className="double-row">
         <DroapableDiv
           className="backlog-tasks group"
@@ -105,7 +103,11 @@ export const Tasks: React.FC = () => {
           tasks={grouppedTasks[0]}
           allTasks={tasks}
         >
-          <TasksGroup tasks={grouppedTasks[0]} allTasks={tasks} />
+          {isFetching === ItemTypes[0] ? (
+            <Loader />
+          ) : (
+            <TasksGroup tasks={grouppedTasks[0]} allTasks={tasks} />
+          )}
         </DroapableDiv>
         <DroapableDiv
           className="todo-tasks group"
@@ -113,7 +115,11 @@ export const Tasks: React.FC = () => {
           tasks={grouppedTasks[1]}
           allTasks={tasks}
         >
-          <TasksGroup tasks={grouppedTasks[1]} allTasks={tasks} />
+          {isFetching === ItemTypes[1] ? (
+            <Loader />
+          ) : (
+            <TasksGroup tasks={grouppedTasks[1]} allTasks={tasks} />
+          )}
         </DroapableDiv>
       </div>
       <div className="double-row">
@@ -123,7 +129,11 @@ export const Tasks: React.FC = () => {
           tasks={grouppedTasks[2]}
           allTasks={tasks}
         >
-          <TasksGroup tasks={grouppedTasks[2]} allTasks={tasks} />
+          {isFetching === ItemTypes[2] ? (
+            <Loader />
+          ) : (
+            <TasksGroup tasks={grouppedTasks[2]} allTasks={tasks} />
+          )}
         </DroapableDiv>
 
         <DroapableDiv
@@ -132,7 +142,11 @@ export const Tasks: React.FC = () => {
           tasks={grouppedTasks[3]}
           allTasks={tasks}
         >
-          <TasksGroup tasks={grouppedTasks[3]} allTasks={tasks} />
+          {isFetching === ItemTypes[3] ? (
+            <Loader />
+          ) : (
+            <TasksGroup tasks={grouppedTasks[3]} allTasks={tasks} />
+          )}
         </DroapableDiv>
       </div>
       {modalIsActive ? <ShowTaskInModal show={modalIsActive} /> : null}
@@ -141,7 +155,7 @@ export const Tasks: React.FC = () => {
         className="add-task-button"
         onClick={newTask}
       ></button>
-    </>
+    </div>
   );
 };
 
@@ -169,15 +183,17 @@ const DroapableDiv = memo((props: DroapableDivPropsType) => {
       //     props.status as StatusType
       //   )
       // );
-      dispatch(
-        patchTask({
-          ...props.allTasks[droppedAllTasksIndex],
-          status: props.status as StatusType,
-        })
-      );
+      dispatch(tasksActions.setIsFetching(props.status as StatusType));
+      patchOrder({
+        ...props.allTasks[droppedAllTasksIndex],
+        status: props.status as StatusType,
+      });
+      dispatch(tasksActions.setIsFetching(null));
     },
   });
-
+  const patchOrder = async (task: TaskType) => {
+    await dispatch(patchTask(task));
+  };
   return (
     <div ref={drop} className={props.className}>
       {props.children}

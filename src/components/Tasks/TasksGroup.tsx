@@ -5,7 +5,7 @@ import {
   patchTask,
   TaskType,
 } from "../../reducers/tasksReducer";
-import "./Tasks.scss";
+import "./style/Tasks.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { DragItem } from "./Tasks";
 import { getHash } from "../../selectors/taskSelectors";
@@ -66,7 +66,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
     // useCallback(
     async (index: number, item: DragItem) => {
       console.log("drop");
-      dispatch(tasksActions.setIsFetching(true));
+      dispatch(tasksActions.setIsFetching(tasks[0].status));
       await Promise.all(
         tasks.map(async function (item, i) {
           //соберем данные по юзерам
@@ -79,7 +79,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
         })
       );
       dispatch(tasksActions.sortTasksByOrder());
-      dispatch(tasksActions.setIsFetching(false));
+      dispatch(tasksActions.setIsFetching(null));
       // for (let i in tasks) {
       //   await dispatch(
       //     patchTask({
@@ -96,7 +96,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
   let taskItemsByStatuses = tasks.map((item, index) => {
     const allTasksIndex = props.allTasks.findIndex((i) => i.id === item.id);
     return (
-      <div className="item-wrapper" key={item.id}>
+      <>
         <TaskItem
           setModalTask={() => {
             dispatch(modalActions.setModalTask(item));
@@ -109,7 +109,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
           onDrop={(item: DragItem) => handleDrop(index, item)}
           //{(item)=>handleDrop(index,item)}
         />
-      </div>
+      </>
     );
   });
 
