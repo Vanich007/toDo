@@ -97,7 +97,6 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
     return (
       <div
         key={task.id}
-        //@ts-ignore
         ref={dragDropRef}
         style={{ opacity }}
         onClick={setModalTask}
@@ -107,7 +106,7 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
       >
         <div className="task-title">{task.taskName}</div>
         <div className="task-description">{task.description}</div>
-        {/* {deadlineDateFormatted} */}
+        <div className="task-description">{deadlineDateFormatted}</div>
       </div>
     );
   }

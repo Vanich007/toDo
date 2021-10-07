@@ -1,9 +1,9 @@
 {
   "tasks": [
     {
-      "status": "To Do",
+      "status": "In Progress",
       "id": 1,
-      "order": 2,
+      "order": 1,
       "taskName": "Todo1",
       "deadline": 1635488644486,
       "description": "22222222"
@@ -27,10 +27,10 @@
     {
       "status": "To Do",
       "id": 7,
-      "order": 1,
+      "order": 0,
       "taskName": "Todo777777",
-      "deadline": 1633498544486,
-      "description": "121212"
+      "deadline": 1634708144000,
+      "description": "Исправить названия колонок и столбцов в хаотичном порядке"
     },
     {
       "status": "In Progress",

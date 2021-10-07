@@ -95,67 +95,73 @@ export const Tasks: React.FC = () => {
   }, []);
 
   return (
-    <div className="container">
-      <div className="double-row">
-        <DroapableDiv
-          className="backlog-tasks group"
-          status={ItemTypes[0]}
-          tasks={grouppedTasks[0]}
-          allTasks={tasks}
-        >
-          {isFetching === ItemTypes[0] ? (
-            <Loader />
-          ) : (
-            <TasksGroup tasks={grouppedTasks[0]} allTasks={tasks} />
-          )}
-        </DroapableDiv>
-        <DroapableDiv
-          className="todo-tasks group"
-          status={ItemTypes[1]}
-          tasks={grouppedTasks[1]}
-          allTasks={tasks}
-        >
-          {isFetching === ItemTypes[1] ? (
-            <Loader />
-          ) : (
-            <TasksGroup tasks={grouppedTasks[1]} allTasks={tasks} />
-          )}
-        </DroapableDiv>
+    <>
+      <div className="header">
+        <div className="site-title">Roadmap</div>
+        <div className="slogan">By Ivan Remezov</div>
       </div>
-      <div className="double-row">
-        <DroapableDiv
-          className="in-progress-tasks group"
-          status={ItemTypes[2]}
-          tasks={grouppedTasks[2]}
-          allTasks={tasks}
-        >
-          {isFetching === ItemTypes[2] ? (
-            <Loader />
-          ) : (
-            <TasksGroup tasks={grouppedTasks[2]} allTasks={tasks} />
-          )}
-        </DroapableDiv>
+      <div className="container">
+        <div className="double-row">
+          <DroapableDiv
+            className="backlog-tasks group"
+            status={ItemTypes[0]}
+            tasks={grouppedTasks[0]}
+            allTasks={tasks}
+          >
+            {isFetching === ItemTypes[0] ? (
+              <Loader />
+            ) : (
+              <TasksGroup tasks={grouppedTasks[0]} allTasks={tasks} />
+            )}
+          </DroapableDiv>
+          <DroapableDiv
+            className="todo-tasks group"
+            status={ItemTypes[1]}
+            tasks={grouppedTasks[1]}
+            allTasks={tasks}
+          >
+            {isFetching === ItemTypes[1] ? (
+              <Loader />
+            ) : (
+              <TasksGroup tasks={grouppedTasks[1]} allTasks={tasks} />
+            )}
+          </DroapableDiv>
+        </div>
+        <div className="double-row">
+          <DroapableDiv
+            className="in-progress-tasks group"
+            status={ItemTypes[2]}
+            tasks={grouppedTasks[2]}
+            allTasks={tasks}
+          >
+            {isFetching === ItemTypes[2] ? (
+              <Loader />
+            ) : (
+              <TasksGroup tasks={grouppedTasks[2]} allTasks={tasks} />
+            )}
+          </DroapableDiv>
 
-        <DroapableDiv
-          className="ready-tasks group"
-          status={ItemTypes[3]}
-          tasks={grouppedTasks[3]}
-          allTasks={tasks}
-        >
-          {isFetching === ItemTypes[3] ? (
-            <Loader />
-          ) : (
-            <TasksGroup tasks={grouppedTasks[3]} allTasks={tasks} />
-          )}
-        </DroapableDiv>
+          <DroapableDiv
+            className="ready-tasks group"
+            status={ItemTypes[3]}
+            tasks={grouppedTasks[3]}
+            allTasks={tasks}
+          >
+            {isFetching === ItemTypes[3] ? (
+              <Loader />
+            ) : (
+              <TasksGroup tasks={grouppedTasks[3]} allTasks={tasks} />
+            )}
+          </DroapableDiv>
+        </div>
+        {modalIsActive ? <ShowTaskInModal show={modalIsActive} /> : null}
+        <button
+          title="Add task"
+          className="add-task-button"
+          onClick={newTask}
+        ></button>
       </div>
-      {modalIsActive ? <ShowTaskInModal show={modalIsActive} /> : null}
-      <button
-        title="Add task"
-        className="add-task-button"
-        onClick={newTask}
-      ></button>
-    </div>
+    </>
   );
 };
 
