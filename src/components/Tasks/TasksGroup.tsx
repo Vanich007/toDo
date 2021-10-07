@@ -17,8 +17,6 @@ type TasksGroupProps = {
 };
 
 export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
-  // let [lastHoverAllTasksIndex, setLastHoverAllTasksIndex] = useState(-1); //для обработки drop  - над каким элементом брошен
-
   let [tasks, setTasks] = useState(props.tasks); //
 
   const dispatch = useDispatch();
@@ -42,7 +40,6 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
         (i) => i.id === props.allTasks[hoverAllTasksIndex].id
       );
 
-      console.log("local", tasks, localDragIndex, localHoverIndex);
       if (
         localDragIndex > -1 && //если оба элемента из одного столбца
         localHoverIndex > -1 //меняем местами
@@ -50,8 +47,6 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
         const dragItem = tasks[dragIndex];
         const hoverItem = tasks[hoverIndex];
 
-        // if (lastHoverAllTasksIndex !== hoverAllTasksIndex)
-        // setLastHoverAllTasksIndex(hoverAllTasksIndex);
         setTasks((tasks) => {
           const updatedTasks = [...tasks];
           updatedTasks[dragIndex] = hoverItem;
@@ -62,36 +57,21 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
     },
     [tasks]
   );
-  const handleDrop =
-    // useCallback(
-    async (index: number, item: DragItem) => {
-      console.log("drop");
-      dispatch(tasksActions.setIsFetching(tasks[0].status));
-      await Promise.all(
-        tasks.map(async function (item, i) {
-          //соберем данные по юзерам
-          return dispatch(
-            patchTask({
-              ...item,
-              order: i,
-            })
-          );
-        })
-      );
-      dispatch(tasksActions.sortTasksByOrder());
-      dispatch(tasksActions.setIsFetching(null));
-      // for (let i in tasks) {
-      //   await dispatch(
-      //     patchTask({
-      //       ...tasks[i],
-      //       order: parseInt(i),
-      //     })
-      //   );
-      // }
-    };
-  // ,
-  //   [tasksHesh]
-  // );
+  const handleDrop = async (index: number, item: DragItem) => {
+    dispatch(tasksActions.setIsFetching(tasks[0].status));
+    await Promise.all(
+      tasks.map(async function (item, i) {
+        return dispatch(
+          patchTask({
+            ...item,
+            order: i,
+          })
+        );
+      })
+    );
+    dispatch(tasksActions.sortTasksByOrder());
+    dispatch(tasksActions.setIsFetching(null));
+  };
 
   let taskItemsByStatuses = tasks.map((item, index) => {
     const allTasksIndex = props.allTasks.findIndex((i) => i.id === item.id);

@@ -1,16 +1,7 @@
-import React, {
-  useRef,
-  FC,
-  memo,
-  LegacyRef,
-  useState,
-  useCallback,
-} from "react";
+import { useRef, FC, memo } from "react";
 import "./style/Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
-
-import { useDispatch } from "react-redux";
-import { DropTargetMonitor, useDrag, useDrop, XYCoord } from "react-dnd";
+import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 import { DragItem } from "./Tasks";
 const THREEDAYPERIOD = 259200000;
 type TaskItemPropsType = {
@@ -29,7 +20,7 @@ type TaskItemPropsType = {
 
 export const TaskItem: FC<TaskItemPropsType> = memo(
   ({ allTasksId, index, moveListItem, task, onDrop, setModalTask }) => {
-    let [lastHoverIndex, setLastHoverIndex] = useState(allTasksId);
+    
     const [{ isDragging }, dragRef] = useDrag({
       type: "item",
       item: { index, allTasksId },
@@ -73,9 +64,11 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
       drop: onDrop,
     });
 
-    const ref = useRef<HTMLInputElement>(null);
+    const ref = useRef<HTMLDivElement>(null);
+    //const {ref: myElementRef} == useRef<HTMLDivElement>(null);
 
     let dragDropRef = dragRef(dropRef(ref));
+
     // Make items being dragged transparent, so it's easier to see where we drop them
 
     const opacity = isDragging ? 0 : 1;
@@ -97,6 +90,7 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
     return (
       <div
         key={task.id}
+        //@ts-ignore
         ref={dragDropRef}
         style={{ opacity }}
         onClick={setModalTask}

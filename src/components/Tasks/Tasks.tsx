@@ -1,4 +1,4 @@
-import React, { useEffect, memo, useState } from "react";
+import React, { useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./style/Tasks.scss";
 import {
@@ -42,14 +42,8 @@ export const Tasks: React.FC = () => {
     return tasks.filter((item) => item.status === type);
   });
 
-  console.log("tasks", tasks, hash);
-  console.log("grouppedTasks", grouppedTasks);
-
   const modalIsActive = useSelector(getModalIsActive);
   const dispatch = useDispatch();
-  useEffect(() => {
-    hash = tasks.map((item) => `${item.id} ${item.status}`).join("");
-  }, [tasks]);
 
   useEffect(() => {
     dispatch(getTasksFetch()); //get Tasks from json-server
@@ -81,7 +75,6 @@ export const Tasks: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(grouppedTasks);
     for (let i = 0; i <= 3; i++) {
       for (let t in grouppedTasks[i]) {
         dispatch(
@@ -181,14 +174,7 @@ const DroapableDiv = memo((props: DroapableDivPropsType) => {
       const droppedAllTasksIndex = item.allTasksId;
       if (props.allTasks[droppedAllTasksIndex].status === props.status)
         return null;
-      //if item with another status, change status
 
-      // dispatch(
-      //   tasksActions.onChangeTaskStatus(
-      //     props.allTasks[droppedAllTasksIndex].id,
-      //     props.status as StatusType
-      //   )
-      // );
       dispatch(tasksActions.setIsFetching(props.status as StatusType));
       patchOrder({
         ...props.allTasks[droppedAllTasksIndex],

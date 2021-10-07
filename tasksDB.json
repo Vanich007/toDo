@@ -1,9 +1,9 @@
 {
   "tasks": [
     {
-      "status": "In Progress",
+      "status": "Ready",
       "id": 1,
-      "order": 1,
+      "order": 2,
       "taskName": "Todo1",
       "deadline": 1635488644486,
       "description": "22222222"
@@ -11,13 +11,13 @@
     {
       "status": "Backlog",
       "id": 2,
-      "order": 4,
+      "order": 0,
       "taskName": "Todo22",
       "deadline": 1632494447545,
       "description": "22"
     },
     {
-      "status": "Ready",
+      "status": "To Do",
       "id": 6,
       "order": 0,
       "taskName": "Todo66",
@@ -25,7 +25,7 @@
       "description": "3"
     },
     {
-      "status": "To Do",
+      "status": "In Progress",
       "id": 7,
       "order": 0,
       "taskName": "Todo777777",
@@ -35,14 +35,14 @@
     {
       "status": "In Progress",
       "id": 8,
-      "order": 0,
+      "order": 1,
       "taskName": "Todo88",
       "deadline": 1632488544486,
       "description": ""
     },
     {
       "id": 9,
-      "order": 2,
+      "order": 1,
       "status": "Backlog",
       "taskName": "New Task1113",
       "description": "",
