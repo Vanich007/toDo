@@ -1,7 +1,7 @@
 {
   "tasks": [
     {
-      "status": "Backlog",
+      "status": "To Do",
       "id": 1,
       "order": 1,
       "taskName": "Todo1",
@@ -9,36 +9,28 @@
       "description": "22222222"
     },
     {
-      "status": "In Progress",
+      "status": "To Do",
       "id": 2,
       "order": 0,
       "taskName": "Todo22",
       "deadline": 1632494447545,
-      "description": "22"
+      "description": " React Hook useEffect has missing dependencies: 'dispatch' and 'grouppedTasks'. Either include them or remove the dependency array"
     },
     {
-      "status": "To Do",
-      "id": 6,
-      "order": 2,
-      "taskName": "Todo66",
-      "deadline": 1632494447545,
-      "description": "3"
-    },
-    {
-      "status": "To Do",
+      "status": "Backlog",
       "id": 7,
       "order": 0,
-      "taskName": "Todo777777",
-      "deadline": 1634708144000,
+      "taskName": "Todo87777778",
+      "deadline": 1634794544000,
       "description": "Исправить названия колонок и столбцов в хаотичном порядке"
     },
     {
-      "status": "To Do",
+      "status": "In Progress",
       "id": 8,
-      "order": 1,
+      "order": 2,
       "taskName": "Todo88",
-      "deadline": 1635426144000,
-      "description": "Assignments to the 'grouppedTasks' variable from inside React Hook useEffect will be lost after each render. To preserve the value over time, store it in a useRef Hook and keep the mutable value in the '.current' property."
+      "deadline": 1634734944000,
+      "description": "ASssignments to the 'grouppedTasks' variable from inside React Hook useEffect will be lost after each render. To preserve the value over time, store it in a useRef Hook and keep the mutable value in the '.current' property."
     },
     {
       "id": 9,

@@ -57,7 +57,9 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
     <>
       <Modal show={modalIsActive} onHide={handleCancelClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{activeTask.taskName}</Modal.Title>
+          <Modal.Title>
+            {<div style={{ color: "black" }}>{activeTask.taskName}</div>}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <EditTask

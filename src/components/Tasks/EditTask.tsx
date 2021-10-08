@@ -94,125 +94,75 @@ export const EditTask: FC<EditTaskPropsType> = (props) => {
   };
 
   const selectStatus = statuses.map((item) => {
-    if (item === statusState)
-      return (
-        <option selected value={item} key={item}>
-          {" "}
-          {item}
-        </option>
-      );
-    else
-      return (
-        <option value={item} key={item}>
-          {" "}
-          {item}
-        </option>
-      );
+    return (
+      <option value={item} key={item}>
+        {item}
+      </option>
+    );
   });
 
   return (
     <div className="form-group form-control-lg">
-      {statusIsEditing ? (
-        <div>
-          <label htmlFor="status" className="col-sm-2 col-form-label">
-            Статус
-          </label>
-          <div className="col-sm-10">
-            <select
-              className="form-control"
-              id="status"
-              name="status"
-              //value={statusState}
-              onChange={handleChange}
-              onBlur={() => Blur("status")}
-            >
-              {selectStatus}
-            </select>
-          </div>
-        </div>
-      ) : (
-        <div onClick={() => setStatusIsEditing(true)}>
-          <label htmlFor="status" className="col-sm-2 col-form-label">
-            Статус
-          </label>
-          <input
-            id="status"
-            className="form-control"
-            type="text"
-            placeholder={statusState}
-            readOnly
-          />
-        </div>
-      )}
-      {taskNameIsEditing ? (
-        <div className="row">
-          <label htmlFor="taskName" className="col-sm-2 col-form-label">
-            Наименование задачи
-          </label>
-          <input
-            name="taskName"
-            id="taskName"
-            placeholder="Наименование задачи"
-            value={taskNameState}
-            onChange={handleChange}
-            onBlur={() => Blur("taskName")}
-          />
-        </div>
-      ) : (
-        <div onClick={() => setTaskNameIsEditing(true)}>
-          <label htmlFor="taskName" className="col-sm-2 col-form-label">
-            Наименование задачи
-          </label>
-          <input
-            id="taskName"
-            className="form-control"
-            type="text"
-            placeholder={taskNameState}
-            readOnly
-          />
-        </div>
-      )}
+      <div className="input-group mb-3">
+        <label htmlFor="status" className="input-group-text">
+          Status
+        </label>
+        <select
+          defaultValue={statusState}
+          className="form-select"
+          id="status"
+          name="status"
+          onChange={handleChange}
+          onBlur={() => Blur("status")}
+        >
+          {selectStatus}
+        </select>
+      </div>
 
-      {descriptionIsEditing ? (
-        <div className="row">
-          <label htmlFor="description" className="col-sm-2 col-form-label">
-            Описание задачи
-          </label>
-          <input
-            name="description"
-            id="description"
-            placeholder="Описание задачи"
-            value={descriptionState}
-            onChange={handleChange}
-            onBlur={() => Blur("description")}
-          />
-        </div>
-      ) : (
-        <div onClick={() => setDescriptionIsEditing(true)}>
-          <label htmlFor="description" className="col-sm-2 col-form-label">
-            Описание задачи
-          </label>
-          <input
-            id="description"
-            className="form-control"
-            type="text"
-            placeholder={descriptionState}
-            readOnly
-          />
-        </div>
-      )}
-
-      <label htmlFor="deadline" className="col-sm-2 col-form-label">
-        Срок исполнения
-      </label>
-      <DatePicker
-        selected={deadlineState}
-        onChange={(date) => setDeadlineState(date as Date)}
-        onCalendarClose={() => Blur("deadline")}
-        name="deadline"
-        id="deadline"
-        dateFormat="dd/MM/yyyy"
-      />
+      <div className="input-group mb-3">
+        <label htmlFor="taskName" className="input-group-text">
+          Task name
+        </label>
+        <input
+          className="form-control"
+          name="taskName"
+          id="taskName"
+          placeholder="Task name"
+          value={taskNameState}
+          onChange={handleChange}
+          onBlur={() => Blur("taskName")}
+        />
+      </div>
+      <div className="input-group mb-3">
+        <label htmlFor="description" className="input-group-text">
+          Description
+        </label>
+        <input
+          className="form-control"
+          name="description"
+          id="description"
+          placeholder="Description"
+          value={descriptionState}
+          onChange={handleChange}
+          onBlur={() => Blur("description")}
+        />
+      </div>
+      <div className="input-group mb-3">
+        <label htmlFor="deadline" className="input-group-text">
+          Deadline date
+        </label>
+        {/* <div id="deadlinediv" className="form-control"> */}
+        <DatePicker
+          className="form-control"
+          selected={deadlineState}
+          onChange={(date) => setDeadlineState(date as Date)}
+          onCalendarClose={() => Blur("deadline")}
+          name="deadline"
+          id="deadline"
+          dateFormat="dd/MM/yyyy"
+        />
+        {/* </div> */}
+      </div>
     </div>
   );
 };

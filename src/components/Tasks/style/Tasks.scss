@@ -123,7 +123,7 @@ body {
   height: 100%;
 }
 .task-item {
-  margin: 8px;
+  margin: 8px 0;
   @include border-radius(8px);
   background-color: $itembackgroundcolor;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12), 0px 16px 32px rgba(0, 0, 0, 0.08);
@@ -205,6 +205,13 @@ body {
   opacity: 0.7;
   z-index: 5;
   border: transparent 0;
+}
+.row {
+  @include flexible();
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  color: #000;
 }
 
 .loader {
