@@ -1,15 +1,15 @@
 {
   "tasks": [
     {
-      "status": "Ready",
+      "status": "Backlog",
       "id": 1,
-      "order": 2,
+      "order": 1,
       "taskName": "Todo1",
       "deadline": 1635488644486,
       "description": "22222222"
     },
     {
-      "status": "Backlog",
+      "status": "In Progress",
       "id": 2,
       "order": 0,
       "taskName": "Todo22",
@@ -19,13 +19,13 @@
     {
       "status": "To Do",
       "id": 6,
-      "order": 0,
+      "order": 2,
       "taskName": "Todo66",
       "deadline": 1632494447545,
       "description": "3"
     },
     {
-      "status": "In Progress",
+      "status": "To Do",
       "id": 7,
       "order": 0,
       "taskName": "Todo777777",
@@ -33,17 +33,17 @@
       "description": "Исправить названия колонок и столбцов в хаотичном порядке"
     },
     {
-      "status": "In Progress",
+      "status": "To Do",
       "id": 8,
       "order": 1,
       "taskName": "Todo88",
-      "deadline": 1632488544486,
-      "description": ""
+      "deadline": 1635426144000,
+      "description": "Assignments to the 'grouppedTasks' variable from inside React Hook useEffect will be lost after each render. To preserve the value over time, store it in a useRef Hook and keep the mutable value in the '.current' property."
     },
     {
       "id": 9,
-      "order": 1,
-      "status": "Backlog",
+      "order": 0,
+      "status": "Ready",
       "taskName": "New Task1113",
       "description": "",
       "deadline": 1633760893000

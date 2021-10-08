@@ -88,12 +88,12 @@ export const Tasks: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <div className="container">
       <div className="header">
         <div className="site-title">Roadmap</div>
         <div className="slogan">By Ivan Remezov</div>
       </div>
-      <div className="container">
+      <div className="tasks-container">
         <div className="double-row">
           <DroapableDiv
             className="backlog-tasks group"
@@ -154,7 +154,7 @@ export const Tasks: React.FC = () => {
           onClick={newTask}
         ></button>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -179,15 +179,16 @@ const DroapableDiv = memo((props: DroapableDivPropsType) => {
       patchOrder({
         ...props.allTasks[droppedAllTasksIndex],
         status: props.status as StatusType,
+      }).then(() => {
+        dispatch(tasksActions.setIsFetching(null));
       });
-      dispatch(tasksActions.setIsFetching(null));
     },
   });
   const patchOrder = async (task: TaskType) => {
     await dispatch(patchTask(task));
   };
   return (
-    <div ref={drop} className={props.className}>
+    <div key={props.className} ref={drop} className={props.className}>
       {props.children}
     </div>
   );

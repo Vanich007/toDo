@@ -47,7 +47,7 @@ $ready: #00a88b;
 }
 body {
   color: $white;
-  font-family: "SF Pro Display Regular", " Roboto";
+  font-family: "SF Pro Display Regular";
   letter-spacing: 0.04em;
   box-sizing: border-box;
 }
@@ -57,7 +57,7 @@ body {
   background: $containerbackgroundcolor;
 }
 .site-title {
-  font-family: "SF Pro Display Bold", "Roboto";
+  font-family: "SF Pro Display Bold";
   font-style: normal;
   font-weight: bold;
   font-size: 50px;
@@ -73,6 +73,14 @@ body {
   text-decoration-line: underline;
 }
 .container {
+  @include flexible();
+  background: $containerbackgroundcolor;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1544px;
+}
+.tasks-container {
   @include flexible();
   background: $containerbackgroundcolor;
   flex-direction: row;
@@ -110,11 +118,10 @@ body {
     width: 80%;
   }
 }
-// .item-wrapper {
-//   width: 80%;
-//   padding: 5px;
-//   margin: 3px auto;
-// }
+.item-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .task-item {
   margin: 8px;
   @include border-radius(8px);
@@ -148,6 +155,7 @@ body {
   order: 0;
   align-self: stretch;
   flex-grow: 0;
+  padding-bottom: 8px;
 }
 .task-description {
   font-style: normal;
@@ -159,6 +167,7 @@ body {
   order: 1;
   align-self: stretch;
   flex-grow: 0;
+  padding-bottom: 8px;
 }
 
 .backlog-tasks:before {
@@ -206,6 +215,30 @@ body {
   border-radius: 50%;
   background: linear-gradient(45deg, transparent, transparent 40%, #e5f403);
   animation: animate 2s linear infinite;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    background: $groupbackgroundcolor;
+    border-radius: 50%;
+    z-index: 1000;
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: linear-gradient(45deg, transparent, transparent 40%, #e5f403);
+    border-radius: 50%;
+    z-index: 1000;
+    z-index: 1;
+    filter: blur(30px);
+  }
 }
 @keyframes animate {
   0% {
@@ -216,28 +249,4 @@ body {
     transform: rotate(360deg);
     filter: hue-rotate(360deg);
   }
-}
-.loader:before {
-  content: "";
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  right: 6px;
-  bottom: 6px;
-  background: $groupbackgroundcolor;
-  border-radius: 50%;
-  z-index: 1000;
-}
-.loader:after {
-  content: "";
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  background: linear-gradient(45deg, transparent, transparent 40%, #e5f403);
-  border-radius: 50%;
-  z-index: 1000;
-  z-index: 1;
-  filter: blur(30px);
 }

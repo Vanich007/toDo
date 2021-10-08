@@ -17,7 +17,7 @@ type TasksGroupProps = {
 };
 
 export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
-  let [tasks, setTasks] = useState(props.tasks); //
+  let [tasks, setTasks] = useState(props.tasks);
 
   const dispatch = useDispatch();
   const tasksHash = useSelector(getHash);
@@ -76,7 +76,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
   let taskItemsByStatuses = tasks.map((item, index) => {
     const allTasksIndex = props.allTasks.findIndex((i) => i.id === item.id);
     return (
-      <>
+      <div className="item-wrapper" key={allTasksIndex}>
         <TaskItem
           setModalTask={() => {
             dispatch(modalActions.setModalTask(item));
@@ -84,12 +84,10 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
           index={index}
           allTasksId={allTasksIndex}
           moveListItem={moveTaskListItem}
-          key={item.id}
           task={item}
           onDrop={(item: DragItem) => handleDrop(index, item)}
-          //{(item)=>handleDrop(index,item)}
         />
-      </>
+      </div>
     );
   });
 

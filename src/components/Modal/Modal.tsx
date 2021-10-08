@@ -1,12 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FC, useEffect } from "react";
-import {
-  actions,
-  createTask,
-  deleteTask,
-  patchTask,
-} from "../../reducers/tasksReducer";
+import { createTask, deleteTask, patchTask } from "../../reducers/tasksReducer";
 import { actions as modalActions } from "../../reducers/modalReducer";
 import {
   getActiveTask,

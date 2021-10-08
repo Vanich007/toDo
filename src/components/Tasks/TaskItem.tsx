@@ -20,7 +20,6 @@ type TaskItemPropsType = {
 
 export const TaskItem: FC<TaskItemPropsType> = memo(
   ({ allTasksId, index, moveListItem, task, onDrop, setModalTask }) => {
-    
     const [{ isDragging }, dragRef] = useDrag({
       type: "item",
       item: { index, allTasksId },
@@ -65,15 +64,11 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
     });
 
     const ref = useRef<HTMLDivElement>(null);
-    //const {ref: myElementRef} == useRef<HTMLDivElement>(null);
-
     let dragDropRef = dragRef(dropRef(ref));
 
     // Make items being dragged transparent, so it's easier to see where we drop them
 
     const opacity = isDragging ? 0 : 1;
-
-    // let [showModal, setShowModal] = useState(false);
 
     const deadlineDate = new Date(task.deadline);
     const deadlineDateFormatted = `${deadlineDate.getDate()}.${
@@ -89,9 +84,9 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
 
     return (
       <div
-        key={task.id}
         //@ts-ignore
         ref={dragDropRef}
+        key={String(allTasksId) + String(task.id)}
         style={{ opacity }}
         onClick={setModalTask}
         className={`task-item ${deadlinesoon ? "deadline-soon" : ""} ${
