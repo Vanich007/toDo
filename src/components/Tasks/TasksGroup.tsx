@@ -17,6 +17,8 @@ type TasksGroupProps = {
 };
 
 export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
+  //console.log("TasksGroup props", props);
+
   let [tasks, setTasks] = useState(props.tasks);
 
   const dispatch = useDispatch();
@@ -24,7 +26,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
 
   useEffect(() => {
     setTasks(props.tasks);
-  }, [tasksHash]);
+  }, [props.tasks]);
 
   const moveTaskListItem = useCallback(
     (
@@ -75,6 +77,8 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
 
   let taskItemsByStatuses = tasks.map((item, index) => {
     const allTasksIndex = props.allTasks.findIndex((i) => i.id === item.id);
+    if (allTasksIndex < 0) return;
+
     return (
       <div className="item-wrapper" key={allTasksIndex}>
         <TaskItem

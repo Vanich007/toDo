@@ -24,6 +24,7 @@ const defaultstate = {
   tasks: [] as Array<TaskType>,
   maxId: 0 as Number,
   isFetching: null as StatusType | null,
+  filter: "",
 };
 type defaultStateType = typeof defaultstate;
 
@@ -68,6 +69,9 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
     case "TR_SET_IS_FETCHING":
       newState.isFetching = action.isFetching;
       return newState;
+    case "TR_SET_FILTER":
+      newState.filter = action.filter;
+      return newState;
     default:
       return state;
   }
@@ -93,16 +97,28 @@ export let actions = {
   setIsFetching: (isFetching: StatusType | null) => {
     return { isFetching, type: "TR_SET_IS_FETCHING" } as const;
   },
+  setFilter: (filter: string) => {
+    return { filter, type: "TR_SET_FILTER" } as const;
+  },
 };
 
-export const getTasksFetch = () => {
+export const getTasksFetch = (
+  filter: string,
+  page: number = 1,
+  limit: number = 100
+) => {
   return (dispatch: DispatchType) => {
-    return fetch("http://localhost:5000/tasks", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    return fetch(
+      `http://localhost:5000/tasks${filter ? filter + "&" : ""}?_page=${page}${
+        limit ? "&_limit=" + limit : ""
+      }`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((resp) => resp.json())
       .then((data) => {
         if (data.message) {

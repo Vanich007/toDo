@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import { getIsNewTask } from "../../selectors/modalSelectors";
 type ShowTaskInModalPropsType = {
   show: boolean;
+  changeUrl: boolean;
 };
 export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
   const activeTask = useSelector(getActiveTask);
@@ -21,10 +22,12 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
   const history = useHistory();
 
   useEffect(() => {
-    history.push({
-      pathname: "/task/",
-      search: `?task=${activeTask.id}`,
-    });
+    if (props.changeUrl) {
+      history.push({
+        pathname: "/task/",
+        search: `?task=${activeTask.id}`,
+      });
+    }
   }, [activeTask.id]);
 
   const temporaryTask = useSelector(getTemporaryTask);
@@ -40,17 +43,17 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
     } else dispatch(patchTask(temporaryTask));
 
     dispatch(modalActions.turnOffModal());
-    history.push({ pathname: "/" });
+    if (props.changeUrl) history.push({ pathname: "/" });
   };
   const handleCancelClose = () => {
     dispatch(modalActions.turnOffModal());
-    history.push({ pathname: "/" });
+    if (props.changeUrl) history.push({ pathname: "/" });
   };
 
   const deleteTaskItem = () => {
     dispatch(deleteTask(activeTask.id));
     dispatch(modalActions.turnOffModal());
-    history.push({ pathname: "/" });
+    if (props.changeUrl) history.push({ pathname: "/" });
   };
 
   return (

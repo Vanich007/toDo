@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from "react";
+import React, { useEffect, memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./style/Tasks.scss";
 import {
@@ -12,6 +12,7 @@ import {
   patchTask,
 } from "../../reducers/tasksReducer";
 import {
+  getFilter,
   getHash,
   getIsFetching,
   getModalIsActive,
@@ -24,6 +25,8 @@ import { TasksGroup } from "./TasksGroup";
 import { useDrop } from "react-dnd";
 import { actions as tasksActions } from "../../reducers/tasksReducer";
 import { Loader } from "../Loader/Loader";
+import { Filter } from "../Filter/Filter";
+import { Redirect, useHistory } from "react-router";
 
 const ItemTypes = [Backlog, toDo, inProgress, ready];
 export interface DragItem {
@@ -36,24 +39,26 @@ export interface DragItem {
 export const Tasks: React.FC = () => {
   const isFetching = useSelector(getIsFetching);
   const tasks = useSelector(getTasks);
-  let hash = useSelector(getHash);
-
-  let grouppedTasks = ItemTypes.map((type) => {
-    return tasks.filter((item) => item.status === type);
-  });
-
+  const filter = useSelector(getFilter);
+  // let hash = useSelector(getHash);
+  let [grouppedTasks, setGrouppedTasks] = useState([[], [], [], []] as Array<
+    Array<TaskType>
+  >);
   const modalIsActive = useSelector(getModalIsActive);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
-    dispatch(getTasksFetch()); //get Tasks from json-server
-  }, []);
+    dispatch(getTasksFetch(filter)); //get Tasks from json-server
+  }, [filter]);
 
   useEffect(() => {
-    grouppedTasks = ItemTypes.map((type) => {
-      return tasks.filter((item) => item.status === type);
-    });
-  }, [hash]);
+    setGrouppedTasks(
+      ItemTypes.map((type) => {
+        return tasks.filter((item) => item.status === type);
+      })
+    );
+  }, [tasks]);
 
   let id = useSelector(getTasksMaxId) as number;
   id++;
@@ -90,8 +95,13 @@ export const Tasks: React.FC = () => {
   return (
     <div className="container">
       <div className="header">
-        <div className="site-title">Roadmap</div>
-        <div className="slogan">By Ivan Remezov</div>
+        <div className="title-slogan">
+          <div className="site-title">Roadmap</div>
+          <div className="slogan">By Ivan Remezov</div>
+        </div>
+        <div className="filter">
+          <Filter />
+        </div>
       </div>
       <div className="tasks-container">
         <div className="double-row">
@@ -147,7 +157,15 @@ export const Tasks: React.FC = () => {
             )}
           </DroapableDiv>
         </div>
-        {modalIsActive ? <ShowTaskInModal show={modalIsActive} /> : null}
+        {modalIsActive ? (
+          <ShowTaskInModal show={modalIsActive} changeUrl={true} />
+        ) : null}
+
+        <button
+          title="Search"
+          className="search-button"
+          onClick={() => history.push({ pathname: "/search" })}
+        ></button>
         <button
           title="Add task"
           className="add-task-button"
