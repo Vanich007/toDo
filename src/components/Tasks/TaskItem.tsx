@@ -29,7 +29,7 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
     });
 
     // useDrop - the list item is also a drop area
-    const [spec, dropRef] = useDrop({
+    const [, dropRef] = useDrop({
       accept: "item",
       hover: (item: DragItem, monitor: DropTargetMonitor) => {
         const dragIndex = item.index;

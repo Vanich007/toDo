@@ -17,7 +17,7 @@
       "description": "Исправить названия колонок и столбцов в хаотичном порядке"
     },
     {
-      "status": "In Progress",
+      "status": "Ready",
       "id": 8,
       "order": 2,
       "taskName": "Todo88",
@@ -74,7 +74,7 @@
     },
     {
       "id": 15,
-      "order": 15,
+      "order": 0,
       "status": "Backlog",
       "taskName": "New Task6",
       "description": "6",
@@ -82,7 +82,7 @@
     },
     {
       "id": 19,
-      "order": 15,
+      "order": 2,
       "status": "Backlog",
       "taskName": "New Task18",
       "description": "6",
@@ -90,7 +90,7 @@
     },
     {
       "id": 18,
-      "order": 15,
+      "order": 1,
       "status": "Backlog",
       "taskName": "New Task19",
       "description": "6",
@@ -98,7 +98,7 @@
     },
     {
       "id": 16,
-      "order": 16,
+      "order": 6,
       "status": "Backlog",
       "taskName": "New Task9",
       "description": "9",
@@ -113,7 +113,7 @@
       "description": " React Hook useEffect has missing dependencies: 'dispatch' and 'grouppedTasks'. Either include them or remove the dependency array"
     },
     {
-      "status": "To Do",
+      "status": "In Progress",
       "id": 71,
       "order": 0,
       "taskName": "Todo8777777890",
@@ -147,7 +147,7 @@
     {
       "id": 111,
       "order": 11,
-      "status": "To Do",
+      "status": "Ready",
       "taskName": "New Task2",
       "description": "2",
       "deadline": 1634917477928
@@ -178,7 +178,7 @@
     },
     {
       "id": 151,
-      "order": 15,
+      "order": 3,
       "status": "Backlog",
       "taskName": "New Task6",
       "description": "6",
@@ -186,7 +186,7 @@
     },
     {
       "id": 119,
-      "order": 15,
+      "order": 4,
       "status": "Backlog",
       "taskName": "New Task18",
       "description": "6",
@@ -194,7 +194,7 @@
     },
     {
       "id": 181,
-      "order": 15,
+      "order": 5,
       "status": "Backlog",
       "taskName": "New Task19",
       "description": "6",
@@ -202,7 +202,7 @@
     },
     {
       "id": 161,
-      "order": 16,
+      "order": 7,
       "status": "Backlog",
       "taskName": "New Task9",
       "description": "9",

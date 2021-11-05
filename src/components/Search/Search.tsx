@@ -1,7 +1,7 @@
 import React, { useEffect, memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../Tasks/style/Tasks.scss";
-import { getTasksFetch } from "../../reducers/tasksReducer";
+
 import { TaskType } from "../../reducers/tasksReducer";
 import {
   getFilter,
@@ -18,6 +18,7 @@ import { Filter } from "../Filter/Filter";
 import { TaskItem } from "../Tasks/TaskItem";
 import { JsxElement } from "typescript";
 import { SearchTerms } from "./SearchTerms";
+import { taskAPI } from "../../API/taskAPI";
 
 export interface DragItem {
   index: number;
@@ -37,11 +38,11 @@ export const Search: React.FC = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getTasksFetch(filter, currentPage, pageLimit)); //get Tasks from json-server
+    dispatch(taskAPI.getTasksFetch(filter, currentPage, pageLimit)); //get Tasks from json-server
   }, [filter, currentPage, pageLimit]);
 
   const limitPerPage = (page: number, limit: number) => {
-    dispatch(getTasksFetch(filter, page, limit));
+    dispatch(taskAPI.getTasksFetch(filter, page, limit));
     setCurrentPage(page);
   };
   const renderLinks = () => {

@@ -35,7 +35,7 @@ export const Filter: FC = () => {
     else if (description)
       dispatch(actions.setFilter(`?description_like=${description}`));
     else dispatch(actions.setFilter(``));
-  }, [taskName, description]);
+  }, [taskName, description, dispatch]);
 
   return (
     <>

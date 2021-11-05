@@ -1,15 +1,12 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { TaskItem } from "./TaskItem";
-import {
-  actions as tasksActions,
-  patchTask,
-  TaskType,
-} from "../../reducers/tasksReducer";
+import { actions as tasksActions, TaskType } from "../../reducers/tasksReducer";
 import "./style/Tasks.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { DragItem } from "./Tasks";
-import { getHash } from "../../selectors/taskSelectors";
+//import { getHash } from "../../selectors/taskSelectors";
 import { actions as modalActions } from "../../reducers/modalReducer";
+import { taskAPI } from "../../API/taskAPI";
 
 type TasksGroupProps = {
   tasks: Array<TaskType>;
@@ -17,12 +14,10 @@ type TasksGroupProps = {
 };
 
 export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
-  //console.log("TasksGroup props", props);
-
   let [tasks, setTasks] = useState(props.tasks);
 
   const dispatch = useDispatch();
-  const tasksHash = useSelector(getHash);
+  //const tasksHash = useSelector(getHash);
 
   useEffect(() => {
     setTasks(props.tasks);
@@ -57,14 +52,14 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
         });
       }
     },
-    [tasks]
+    [tasks, props.allTasks]
   );
   const handleDrop = async (index: number, item: DragItem) => {
     dispatch(tasksActions.setIsFetching(tasks[0].status));
     await Promise.all(
       tasks.map(async function (item, i) {
         return dispatch(
-          patchTask({
+          taskAPI.patchTask({
             ...item,
             order: i,
           })
@@ -77,7 +72,7 @@ export const TasksGroup: React.FC<TasksGroupProps> = (props) => {
 
   let taskItemsByStatuses = tasks.map((item, index) => {
     const allTasksIndex = props.allTasks.findIndex((i) => i.id === item.id);
-    if (allTasksIndex < 0) return;
+    if (allTasksIndex < 0) return null;
 
     return (
       <div className="item-wrapper" key={allTasksIndex}>

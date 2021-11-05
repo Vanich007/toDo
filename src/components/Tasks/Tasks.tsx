@@ -2,18 +2,15 @@ import React, { useEffect, memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./style/Tasks.scss";
 import {
-  getTasksFetch,
   Backlog,
   toDo,
   inProgress,
   ready,
   TaskType,
   StatusType,
-  patchTask,
 } from "../../reducers/tasksReducer";
 import {
   getFilter,
-  getHash,
   getIsFetching,
   getModalIsActive,
   getTasks,
@@ -26,7 +23,8 @@ import { useDrop } from "react-dnd";
 import { actions as tasksActions } from "../../reducers/tasksReducer";
 import { Loader } from "../Loader/Loader";
 import { Filter } from "../Filter/Filter";
-import { Redirect, useHistory } from "react-router";
+import { useHistory } from "react-router";
+import { taskAPI } from "../../API/taskAPI";
 
 const ItemTypes = [Backlog, toDo, inProgress, ready];
 export interface DragItem {
@@ -49,10 +47,11 @@ export const Tasks: React.FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(getTasksFetch(filter)); //get Tasks from json-server
-  }, [filter]);
+    dispatch(taskAPI.getTasksFetch(filter)); //get Tasks from json-server
+  }, [filter, dispatch]);
 
   useEffect(() => {
+
     setGrouppedTasks(
       ItemTypes.map((type) => {
         return tasks.filter((item) => item.status === type);
@@ -90,7 +89,8 @@ export const Tasks: React.FC = () => {
         );
       }
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   return (
     <div className="container">
@@ -186,7 +186,7 @@ type DroapableDivPropsType = {
 
 const DroapableDiv = memo((props: DroapableDivPropsType) => {
   const dispatch = useDispatch();
-  const [spec, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: "item",
     drop: (item: DragItem, monitor) => {
       const droppedAllTasksIndex = item.allTasksId;
@@ -203,7 +203,7 @@ const DroapableDiv = memo((props: DroapableDivPropsType) => {
     },
   });
   const patchOrder = async (task: TaskType) => {
-    await dispatch(patchTask(task));
+    await dispatch(taskAPI.patchTask(task));
   };
   return (
     <div key={props.className} ref={drop} className={props.className}>
