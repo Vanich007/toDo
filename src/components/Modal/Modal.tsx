@@ -1,7 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FC, useEffect } from "react";
-
 import { actions as modalActions } from "../../reducers/modalReducer";
 import {
   getActiveTask,
@@ -10,7 +9,7 @@ import {
 } from "../../selectors/taskSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { EditTask } from "../Tasks/EditTask";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { getIsNewTask } from "../../selectors/modalSelectors";
 import { taskAPI } from "../../API/taskAPI";
 type ShowTaskInModalPropsType = {
@@ -20,16 +19,13 @@ type ShowTaskInModalPropsType = {
 export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
   const activeTask = useSelector(getActiveTask);
   const modalIsActive = useSelector(getModalIsActive);
-  const history = useHistory();
 
+  let navigate = useNavigate();
   useEffect(() => {
     if (props.changeUrl) {
-      history.push({
-        pathname: "/task/",
-        search: `?task=${activeTask.id}`,
-      });
+      navigate(`/task/?task=${activeTask.id}`);
     }
-  }, [activeTask.id, history, props.changeUrl]);
+  }, [activeTask.id, navigate, props.changeUrl]);
 
   const temporaryTask = useSelector(getTemporaryTask);
 
@@ -42,19 +38,19 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
       dispatch(modalActions.setIsNewTask(false));
       dispatch(taskAPI.createTask(temporaryTask));
     } else dispatch(taskAPI.patchTask(temporaryTask));
-
     dispatch(modalActions.turnOffModal());
-    if (props.changeUrl) history.push({ pathname: "/" });
+    if (props.changeUrl) navigate("/");
   };
+
   const handleCancelClose = () => {
     dispatch(modalActions.turnOffModal());
-    if (props.changeUrl) history.push({ pathname: "/" });
+    if (props.changeUrl) navigate("/");
   };
 
   const deleteTaskItem = () => {
     dispatch(taskAPI.deleteTask(activeTask.id));
     dispatch(modalActions.turnOffModal());
-    if (props.changeUrl) history.push({ pathname: "/" });
+    if (props.changeUrl) navigate("/");
   };
 
   return (

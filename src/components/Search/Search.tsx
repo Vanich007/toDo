@@ -1,22 +1,12 @@
 import React, { useEffect, memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../Tasks/style/Tasks.scss";
-
 import { TaskType } from "../../reducers/tasksReducer";
-import {
-  getFilter,
-  getIsFetching,
-  getTasks,
-} from "../../selectors/taskSelectors";
+import { getFilter, getTasks } from "../../selectors/taskSelectors";
 import { getModalIsActive } from "../../selectors/taskSelectors";
 import { ShowTaskInModal } from "../Modal/Modal";
 import { actions as modalActions } from "../../reducers/modalReducer";
-
-import { actions as tasksActions } from "../../reducers/tasksReducer";
-import { Loader } from "../Loader/Loader";
-import { Filter } from "../Filter/Filter";
 import { TaskItem } from "../Tasks/TaskItem";
-import { JsxElement } from "typescript";
 import { SearchTerms } from "./SearchTerms";
 import { taskAPI } from "../../API/taskAPI";
 
@@ -99,38 +89,30 @@ export const Search: React.FC = () => {
 
   return (
     <>
-      <div className="container">
-        <div className="header">
-          <div className="title-slogan">
-            <div className="site-title">Roadmap</div>
-            <div className="slogan">By Ivan Remezov</div>
-          </div>
+      <div className="searched-terms">
+        <div className="input-group mb-3">
+          <SearchTerms />
+          <label htmlFor="tasksPerPage" className="input-group-text">
+            Tasks per page
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="tasksPerPage"
+            value={pageLimit}
+            onChange={(e) => {
+              setPageLimit(parseInt(e.target.value));
+            }}
+          ></input>
         </div>
-        <div className="searched-terms">
-          <div className="input-group mb-3">
-            <SearchTerms />
-            <label htmlFor="tasksPerPage" className="input-group-text">
-              Tasks per page
-            </label>
-            <input
-              type="number"
-              className="form-control"
-              id="tasksPerPage"
-              value={pageLimit}
-              onChange={(e) => {
-                setPageLimit(parseInt(e.target.value));
-              }}
-            ></input>
-          </div>
-        </div>
-
-        <nav aria-label="Page navigation example">{renderLinks()}</nav>
-
-        <div className="searched-tasks-container">{taskItems}</div>
-        {modalIsActive ? (
-          <ShowTaskInModal show={modalIsActive} changeUrl={false} />
-        ) : null}
       </div>
+
+      <nav aria-label="Page navigation example">{renderLinks()}</nav>
+
+      <div className="searched-tasks-container">{taskItems}</div>
+      {modalIsActive ? (
+        <ShowTaskInModal show={modalIsActive} changeUrl={false} />
+      ) : null}
     </>
   );
 };

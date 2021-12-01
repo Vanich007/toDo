@@ -23,8 +23,9 @@ import { useDrop } from "react-dnd";
 import { actions as tasksActions } from "../../reducers/tasksReducer";
 import { Loader } from "../Loader/Loader";
 import { Filter } from "../Filter/Filter";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
 import { taskAPI } from "../../API/taskAPI";
+import { useNavigate } from "react-router";
 
 const ItemTypes = [Backlog, toDo, inProgress, ready];
 export interface DragItem {
@@ -44,14 +45,13 @@ export const Tasks: React.FC = () => {
   >);
   const modalIsActive = useSelector(getModalIsActive);
   const dispatch = useDispatch();
-  const history = useHistory();
 
+  let navigate = useNavigate();
   useEffect(() => {
     dispatch(taskAPI.getTasksFetch(filter)); //get Tasks from json-server
   }, [filter, dispatch]);
 
   useEffect(() => {
-
     setGrouppedTasks(
       ItemTypes.map((type) => {
         return tasks.filter((item) => item.status === type);
@@ -164,7 +164,7 @@ export const Tasks: React.FC = () => {
         <button
           title="Search"
           className="search-button"
-          onClick={() => history.push({ pathname: "/search" })}
+          onClick={() => navigate('/search')}
         ></button>
         <button
           title="Add task"

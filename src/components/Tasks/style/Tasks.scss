@@ -63,38 +63,7 @@ body {
   width: 100%;
   padding: 24px 24px 38px 48px;
 }
-.title-slogan {
-}
-.site-title {
-  font-family: "SF Pro Display Bold";
-  font-style: normal;
-  font-weight: bold;
-  font-size: 50px;
-  line-height: 60px;
-  padding-bottom: 10px;
-}
-.slogan {
-  font-family: "SF Pro Text";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 150%;
-  text-decoration-line: underline;
-}
 
-.filter {
-  @include flexible();
-  flex-direction: row;
-  align-items: stretch;
-}
-
-.container {
-  @include flexible();
-  flex-direction: column;
-  align-items: stretch;
-  width: 100%;
-  max-width: 1544px;
-}
 .tasks-container {
   @include flexible();
   // background: $containerbackgroundcolor;
@@ -141,6 +110,7 @@ body {
   width: 100%;
   align-items: center;
   padding: 24px;
+  word-break: break-all;
   @media (max-width: 575px) {
     width: 80%;
   }

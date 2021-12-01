@@ -1,0 +1,57 @@
+@mixin flexible() {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+.sitetitle {
+  font-family: "SF Pro Display Bold";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 50px;
+  line-height: 60px;
+  padding-bottom: 10px;
+}
+.slogan {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 150%;
+  text-decoration-line: underline;
+}
+
+.filter {
+  @include flexible();
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.container {
+  @include flexible();
+  padding: 20px;
+  position: relative;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1544px;
+  //   background-image: url("https://phonoteka.org/uploads/posts/2021-05/1621824608_25-phonoteka_org-p-kosmicheskii-fon-dlya-saita-25.jpg");
+  background: no-repeat
+    url("https://www.culture.ru/storage/images/c7e4c89324429c4ae20759ba425e5411/77226884ed6936fdb9ab8d98983636cd.jpeg");
+  background-size: contain;
+  z-index: 0;
+}
+.gradient {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(220deg, #0c162c, #4d1c3d);
+  opacity: 0.85;
+  z-index: -1;
+}
