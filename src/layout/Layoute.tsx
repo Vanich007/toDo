@@ -1,11 +1,27 @@
 import React, { FC } from "react";
+import { Alert, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Filter } from "../components/Filter/Filter";
+import { actions } from "../reducers/tasksReducer";
+import { getError } from "../selectors/taskSelectors";
 import styles from "./Layout.module.scss";
 const Layoute: FC<React.ReactNode> = ({ children }) => {
+  let error = useSelector(getError);
+  const dispatch = useDispatch();
+  const clearError = () => {
+    dispatch(actions.clearError());
+  };
   return (
     <>
       <div className={styles.container}>
         <div className={styles.gradient} />
+        {error && (
+          <Alert variant="danger" onClose={clearError} dismissible>
+            <Alert.Heading>Error occured!</Alert.Heading>
+            <p>{error}</p>
+          </Alert>
+        )}
         <div className="header">
           <div>
             <Link to="/">

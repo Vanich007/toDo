@@ -9,7 +9,7 @@
       "description": " React Hook useEffect has missing dependencies: 'dispatch' and 'grouppedTasks'. Either include them or remove the dependency array"
     },
     {
-      "status": "In Progress",
+      "status": "To Do",
       "id": 7,
       "order": 0,
       "taskName": "Todo87",

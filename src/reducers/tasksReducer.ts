@@ -24,6 +24,7 @@ const defaultstate = {
   tasks: [] as Array<TaskType>,
   maxId: 0 as Number,
   isFetching: null as StatusType | null,
+  error: "",
   filter: "",
 };
 type defaultStateType = typeof defaultstate;
@@ -72,6 +73,13 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
     case "TR_SET_FILTER":
       newState.filter = action.filter;
       return newState;
+    case "TR_GOT_ERROR":
+      newState.error = action.error;
+      return newState;
+    case "TR_CLEAR_ERROR":
+      newState.error = "";
+      console.log("error cleared");
+      return newState;
     default:
       return state;
   }
@@ -99,5 +107,11 @@ export let actions = {
   },
   setFilter: (filter: string) => {
     return { filter, type: "TR_SET_FILTER" } as const;
+  },
+  gotError: (error: string) => {
+    return { error, type: "TR_GOT_ERROR" } as const;
+  },
+  clearError: () => {
+    return { type: "TR_CLEAR_ERROR" } as const;
   },
 };

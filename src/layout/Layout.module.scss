@@ -42,8 +42,10 @@ a {
   //   background-image: url("https://phonoteka.org/uploads/posts/2021-05/1621824608_25-phonoteka_org-p-kosmicheskii-fon-dlya-saita-25.jpg");
   background: no-repeat
     url("https://www.culture.ru/storage/images/c7e4c89324429c4ae20759ba425e5411/77226884ed6936fdb9ab8d98983636cd.jpeg");
-  background-size: contain;
+  background-size: cover;
+  background-attachment: fixed;
   z-index: 0;
+  height: 100%;
 }
 .gradient {
   position: absolute;

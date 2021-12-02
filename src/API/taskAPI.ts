@@ -1,6 +1,15 @@
 import { DispatchType } from "../reducers/tasksReducer";
 import { actions, TaskType } from "../reducers/tasksReducer";
 
+// const timeout = new Promise((resolve, reject) => {
+//   setTimeout(resolve, 2500, {
+//     message: "Server is not responding",
+//   });
+// });
+// type responceDataType={
+//   message?:string
+//   value:unknown
+// }
 const PORT = 5001;
 
 export const taskAPI = {
@@ -11,20 +20,22 @@ export const taskAPI = {
           filter ? filter + "&" : ""
         }?_page=${page}${limit ? "&_limit=" + limit : ""}`,
         {
-          method: "GET",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
         }
       )
         .then((resp) => resp.json())
+
         .then((data) => {
           if (data.message) {
-            console.error(data.message);
+            dispatch(actions.gotError(data.message));
           } else {
             dispatch(actions.onGotTasks(data));
           }
-        });
+        })
+        .catch((error) => dispatch(actions.gotError("Server error" + error)));
     };
   },
 
@@ -40,7 +51,7 @@ export const taskAPI = {
         .then((resp) => resp.json())
         .then((data) => {
           if (data.message) {
-            console.error(data.message);
+            dispatch(actions.gotError(data.message));
           } else {
             dispatch(actions.onTaskChange(data));
           }
@@ -59,7 +70,7 @@ export const taskAPI = {
         .then((resp) => resp.json())
         .then((data) => {
           if (data.message) {
-            console.error(data.message);
+            dispatch(actions.gotError(data.message));
           } else {
             dispatch(actions.onTaskDelete(id));
           }
@@ -69,17 +80,27 @@ export const taskAPI = {
 
   createTask: (task: TaskType) => {
     return (dispatch: DispatchType) => {
-      return fetch(`http://localhost:${PORT}/tasks/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(task),
-      })
-        .then((resp) => resp.json())
+      const time = new Promise(function (resolve) {
+        setTimeout(() => {
+          let res = { message: "Server don't response" };
+          return res;
+        }, 3000);
+      });
+
+      return Promise.race([
+        fetch(`http://localhost:${PORT}/tasks/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(task),
+        }),
+        time,
+      ])
+        .then((resp: any) => resp.json())
         .then((data) => {
           if (data.message) {
-            console.error(data.message);
+            dispatch(actions.gotError(data.message));
           } else {
             dispatch(actions.onTaskCreate(data));
           }

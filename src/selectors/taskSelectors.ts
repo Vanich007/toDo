@@ -11,6 +11,7 @@ export const getActiveTask = (state: AppStateType) =>
 export const getTemporaryTask = (state: AppStateType) =>
   state.modalPage.temporaryTask;
 export const getFilter = (state: AppStateType) => state.tasksPage.filter;
+export const getError = (state: AppStateType) => state.tasksPage.error;
 
 export const getHash = (state: AppStateType) =>
   state.tasksPage.tasks

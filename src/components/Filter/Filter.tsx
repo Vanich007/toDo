@@ -44,7 +44,7 @@ export const Filter: FC = () => {
       </div> */}
 
       <div className="input-group input-group-sm mb-3">
-        <div className="fw-bold">Filter</div>
+        <div className="fw-bold p-2">Filter</div>
         <div className="row g-2">
           {/* <label htmlFor="filter_task_name" className="input-group-text">
             Task name

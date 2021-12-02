@@ -63,7 +63,12 @@ body {
   width: 100%;
   padding: 24px 24px 38px 48px;
 }
-
+.filter {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  z-index: -1;
+}
 .tasks-container {
   @include flexible();
   // background: $containerbackgroundcolor;
