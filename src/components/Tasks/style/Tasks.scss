@@ -116,6 +116,7 @@ body {
   align-items: center;
   padding: 24px;
   word-break: break-all;
+  max-height: 2000px;
   @media (max-width: 575px) {
     width: 80%;
   }
@@ -135,6 +136,12 @@ body {
   cursor: pointer;
   width: 100%;
   // max-width: 368px;
+}
+.card {
+  word-break: keep-all;
+}
+.card-header {
+  word-break: break-all;
 }
 
 .deadline-soon {

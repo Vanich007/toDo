@@ -3,6 +3,7 @@ import "./style/Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 import { DragItem } from "./Tasks";
+import { Card } from "react-bootstrap";
 const THREEDAYPERIOD = 259200000;
 type TaskItemPropsType = {
   task: TaskType;
@@ -81,21 +82,31 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
         : true;
     const deadlineoff =
       Date.now() > +deadlineDate && task.status !== "Ready" ? true : false;
-
+    let bg = "secondary";
+    if (deadlinesoon) bg = "warning";
+    if (deadlineoff) bg = "danger";
+    if (task.status === "Ready") bg = "success";
     return (
       <div
         //@ts-ignore
         ref={dragDropRef}
-        key={String(allTasksId) + String(task.id)}
-        style={{ opacity }}
         onClick={setModalTask}
-        className={`task-item ${deadlinesoon ? "deadline-soon" : ""} ${
-          deadlineoff ? "deadline-off" : ""
-        } ${task.status === "Ready" ? "ready" : ""}`}
       >
-        <div className="task-title">{task.taskName}</div>
-        <div className="task-description">{task.description}</div>
-        <div className="task-description">{deadlineDateFormatted}</div>
+        <Card
+          bg={bg}
+          key={String(allTasksId) + String(task.id)}
+          style={{ opacity }}
+          className="mb-2"
+        >
+          <Card.Header>{task.taskName}</Card.Header>
+          <Card.Body>
+            {/* <Card.Title>{task.taskName}</Card.Title> */}
+            <Card.Text>
+              <span className="task-description">{task.description}</span>
+              <span className="task-description">{deadlineDateFormatted}</span>
+            </Card.Text>
+          </Card.Body>
+        </Card>
       </div>
     );
   }

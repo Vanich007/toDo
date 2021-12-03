@@ -150,9 +150,7 @@ export const Tasks: React.FC = () => {
           )}
         </DroapableDiv>
       </div>
-      {modalIsActive ? (
-        <ShowTaskInModal show={modalIsActive} changeUrl={true} />
-      ) : null}
+      {modalIsActive && <ShowTaskInModal show={modalIsActive} changeUrl={true} />}
 
       <button
         title="Search"

@@ -1,4 +1,4 @@
-import React, { useEffect, memo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../Tasks/style/Tasks.scss";
 import { TaskType } from "../../reducers/tasksReducer";
@@ -29,7 +29,7 @@ export const Search: React.FC = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(taskAPI.getTasksFetch(filter, currentPage, pageLimit)); //get Tasks from json-server
-  }, [filter, currentPage, pageLimit]);
+  }, [filter, currentPage, pageLimit, dispatch]);
 
   const limitPerPage = (page: number, limit: number) => {
     dispatch(taskAPI.getTasksFetch(filter, page, limit));
@@ -43,12 +43,12 @@ export const Search: React.FC = () => {
           ""
         ) : (
           <li className="page-item">
-            <a
+            <span
               className="page-link"
               onClick={() => limitPerPage(currentPage - 1, pageLimit)}
             >
               Back
-            </a>
+            </span>
           </li>
         )}
         <li className="page-item">
@@ -56,12 +56,12 @@ export const Search: React.FC = () => {
         </li>
         {tasks.length === pageLimit ? (
           <li className="page-item">
-            <a
+            <span
               className="page-link"
               onClick={() => limitPerPage(currentPage + 1, pageLimit)}
             >
               Next
-            </a>
+            </span>
           </li>
         ) : (
           ""

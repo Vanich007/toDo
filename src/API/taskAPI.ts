@@ -20,7 +20,7 @@ export const taskAPI = {
           filter ? filter + "&" : ""
         }?_page=${page}${limit ? "&_limit=" + limit : ""}`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
@@ -35,7 +35,7 @@ export const taskAPI = {
             dispatch(actions.onGotTasks(data));
           }
         })
-        .catch((error) => dispatch(actions.gotError("Server error" + error)));
+        .catch((error) => dispatch(actions.gotError(error)));
     };
   },
 

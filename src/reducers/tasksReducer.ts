@@ -78,7 +78,6 @@ export const tasksReducer = (state = defaultstate, action: ActionTypes) => {
       return newState;
     case "TR_CLEAR_ERROR":
       newState.error = "";
-      console.log("error cleared");
       return newState;
     default:
       return state;

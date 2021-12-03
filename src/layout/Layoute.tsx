@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { Alert, Button } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Filter } from "../components/Filter/Filter";
+
 import { actions } from "../reducers/tasksReducer";
 import { getError } from "../selectors/taskSelectors";
 import styles from "./Layout.module.scss";
@@ -19,7 +19,7 @@ const Layoute: FC<React.ReactNode> = ({ children }) => {
         {error && (
           <Alert variant="danger" onClose={clearError} dismissible>
             <Alert.Heading>Error occured!</Alert.Heading>
-            <p>{error}</p>
+            {error}
           </Alert>
         )}
         <div className="header">
