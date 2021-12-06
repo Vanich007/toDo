@@ -2,11 +2,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FC, useEffect } from "react";
 import { actions as modalActions } from "../../reducers/modalReducer";
-import {
-  getActiveTask,
-  getTemporaryTask,
-  getModalIsActive,
-} from "../../selectors/taskSelectors";
+import { getActiveTask, getModalIsActive } from "../../selectors/taskSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { EditTask } from "../Tasks/EditTask";
 import { useNavigate } from "react-router";
@@ -27,32 +23,12 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
     }
   }, [activeTask.id, navigate, props.changeUrl]);
 
-  const temporaryTask = useSelector(getTemporaryTask);
-
   const dispatch = useDispatch();
-
-  const isNewTask = useSelector(getIsNewTask);
-
-  const handleSaveClose = () => {
-    if (isNewTask) {
-      dispatch(modalActions.setIsNewTask(false));
-      dispatch(taskAPI.createTask(temporaryTask));
-    } else dispatch(taskAPI.patchTask(temporaryTask));
-    dispatch(modalActions.turnOffModal());
-    if (props.changeUrl) navigate("/");
-  };
 
   const handleCancelClose = () => {
     dispatch(modalActions.turnOffModal());
-    if (props.changeUrl) navigate("/");
+    // if (props.changeUrl) navigate("/");
   };
-
-  const deleteTaskItem = () => {
-    dispatch(taskAPI.deleteTask(activeTask.id));
-    dispatch(modalActions.turnOffModal());
-    if (props.changeUrl) navigate("/");
-  };
-
   return (
     <>
       <Modal show={modalIsActive} onHide={handleCancelClose}>
@@ -72,17 +48,6 @@ export const ShowTaskInModal: FC<ShowTaskInModalPropsType> = (props) => {
             description={activeTask.description}
           />
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleSaveClose}>
-            Save Changes
-          </Button>
-          <Button onClick={deleteTaskItem} variant="danger">
-            Delete
-          </Button>
-          <Button variant="secondary" onClick={handleCancelClose}>
-            Cancel
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );

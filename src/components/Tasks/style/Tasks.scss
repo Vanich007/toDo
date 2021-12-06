@@ -177,7 +177,19 @@ body {
   flex-grow: 0;
   padding-bottom: 8px;
 }
+.form-group {
+  p {
+    color: #bf1650;
+    position: relative;
+    top: -10px;
+    left: 10px;
+  }
 
+  p::before {
+    display: inline;
+    content: "⚠ ";
+  }
+}
 .backlog-tasks:before {
   content: "Backlog";
   @include column-header();

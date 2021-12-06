@@ -8,8 +8,6 @@ export const getModalIsActive = (state: AppStateType) =>
   state.modalPage.modalIsActive;
 export const getActiveTask = (state: AppStateType) =>
   state.modalPage.activeTask;
-export const getTemporaryTask = (state: AppStateType) =>
-  state.modalPage.temporaryTask;
 export const getFilter = (state: AppStateType) => state.tasksPage.filter;
 export const getError = (state: AppStateType) => state.tasksPage.error;
 

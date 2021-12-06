@@ -3,7 +3,6 @@ import { InferActionTypes } from "../reduxStore";
 
 type defaultStateType = {
   activeTask: TaskType;
-  temporaryTask: TaskType;
   modalIsActive: boolean;
   isNewTask: boolean;
 };
@@ -19,7 +18,6 @@ const clearTask: TaskType = {
 
 const defaultState: defaultStateType = {
   activeTask: clearTask,
-  temporaryTask: clearTask,
   modalIsActive: false,
   isNewTask: false,
 };
@@ -37,9 +35,7 @@ export const modalReducer = (state = defaultState, action: ActionTypes) => {
       newState.modalIsActive = false;
 
       return newState;
-    case "MR_SET_TEMPORARY_TASK":
-      newState.temporaryTask = { ...action.task };
-      return newState;
+
     case "MR_SET_IS_NEW_TASK":
       newState.isNewTask = action.isNew;
       return newState;
@@ -55,9 +51,6 @@ export let actions = {
   },
   turnOffModal: () => {
     return { type: "MR_TURN_OFF_MODAL" } as const;
-  },
-  setTemporaryTaskData: (task: TaskType) => {
-    return { task, type: "MR_SET_TEMPORARY_TASK" } as const;
   },
   setIsNewTask: (isNew: boolean) => {
     return { isNew, type: "MR_SET_IS_NEW_TASK" } as const;

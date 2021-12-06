@@ -103,9 +103,11 @@ export const TaskItem: FC<TaskItemPropsType> = memo(
             {/* <Card.Title>{task.taskName}</Card.Title> */}
             <Card.Text>
               <span className="task-description">{task.description}</span>
-              <span className="task-description">{deadlineDateFormatted}</span>
             </Card.Text>
-          </Card.Body>
+          </Card.Body>{" "}
+          <Card.Footer className="mb-2 text-info">
+            {deadlineDateFormatted}
+          </Card.Footer>
         </Card>
       </div>
     );
